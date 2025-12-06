@@ -16,6 +16,12 @@ def fetch_feed(feed_url: str, timeout: int = 30) -> List[Dict[str, Any]]:
     - title: Article title
     - content: Article content/summary
     - published_date: Publication date (datetime or None)
+
+    Error Handling:
+    - HTTP errors (404, 420 rate limits, etc.) are caught and logged
+    - Network timeouts are caught and logged
+    - Parse errors are caught and logged
+    - Returns empty list on any error to allow other feeds to continue processing
     """
     articles = []
 

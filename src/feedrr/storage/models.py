@@ -40,11 +40,45 @@ class Article(Base):
     fetched_date = Column(DateTime, default=datetime.utcnow)
     source_id = Column(Integer, ForeignKey("sources.id"), nullable=False)
 
-    # Relationship
+    # Relationships
     source = relationship("Source", back_populates="articles")
+    topics = relationship("ArticleTopic", back_populates="article")
 
     def __repr__(self) -> str:
         return f"<Article(title='{self.title[:50]}...')>"
+
+
+class Topic(Base):
+    """Topic/category for articles."""
+
+    __tablename__ = "topics"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100), unique=True, nullable=False)
+    slug = Column(String(100), unique=True, nullable=False)
+
+    # Relationship
+    articles = relationship("ArticleTopic", back_populates="topic")
+
+    def __repr__(self) -> str:
+        return f"<Topic(name='{self.name}')>"
+
+
+class ArticleTopic(Base):
+    """Junction table for article-topic relationship."""
+
+    __tablename__ = "article_topics"
+
+    id = Column(Integer, primary_key=True)
+    article_id = Column(Integer, ForeignKey("articles.id"), nullable=False)
+    topic_id = Column(Integer, ForeignKey("topics.id"), nullable=False)
+
+    # Relationships
+    article = relationship("Article", back_populates="topics")
+    topic = relationship("Topic", back_populates="articles")
+
+    def __repr__(self) -> str:
+        return f"<ArticleTopic(article_id={self.article_id}, topic_id={self.topic_id})>"
 
 
 def create_database(db_path: str) -> None:

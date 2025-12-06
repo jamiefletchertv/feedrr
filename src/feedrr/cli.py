@@ -13,9 +13,13 @@ from feedrr.storage.db import (
     get_enabled_sources,
     save_articles,
     get_article_count,
-    get_source_count
+    get_source_count,
+    load_topics_from_config,
+    get_articles_without_topics,
+    assign_topic_to_article
 )
 from feedrr.fetcher.rss import fetch_feed
+from feedrr.processor.topics import assign_topics
 
 console = Console()
 
@@ -49,9 +53,17 @@ def init_db() -> None:
 
         session = get_session(str(db_path))
         load_sources_from_config(session, feeds_config['sources'])
+
+        # Load topics from config
+        config_path = get_config_path()
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
+
+        load_topics_from_config(session, config['topics'])
         session.close()
 
         console.print(f"[green]✓[/green] Loaded {len(feeds_config['sources'])} sources from config")
+        console.print(f"[green]✓[/green] Loaded {len(config['topics'])} topics from config")
         console.print("[bold green]Database initialized successfully![/bold green]")
 
     except Exception as e:
@@ -103,12 +115,63 @@ def fetch(fetch_all: bool) -> None:
 
 
 @main.command()
-@click.option("--reprocess", is_flag=True, help="Reprocess all articles")
 @click.option("--limit", type=int, help="Limit number of articles to process")
-def process(reprocess: bool, limit: int | None) -> None:
-    """Process articles with LLM (topic tagging and deduplication)."""
-    console.print("[yellow]LLM processing not yet implemented[/yellow]")
-    console.print("Coming in Phase 3: LLM Integration")
+def process(limit: int | None) -> None:
+    """Process articles with topic tagging."""
+    try:
+        # Get database path
+        db_path = get_data_dir() / "feedrr.db"
+        if not db_path.exists():
+            console.print("[red]Error:[/red] Database not found. Run 'feedrr init-db' first")
+            return
+
+        session = get_session(str(db_path))
+
+        # Load topic definitions from config
+        config_path = get_config_path()
+        with open(config_path) as f:
+            config = yaml.safe_load(f)
+
+        topic_definitions = config['topics']
+
+        # Get articles without topics
+        articles = get_articles_without_topics(session)
+
+        if not articles:
+            console.print("[green]All articles already tagged![/green]")
+            session.close()
+            return
+
+        # Apply limit if specified
+        if limit:
+            articles = articles[:limit]
+
+        console.print(f"[cyan]Processing {len(articles)} articles...[/cyan]\n")
+
+        processed_count = 0
+        for article in articles:
+            # Combine title and content for topic assignment
+            article_text = f"{article.title} {article.content or ''}"
+
+            # Assign topics
+            topic_slugs = assign_topics(article_text, topic_definitions)
+
+            # Save topic assignments
+            for slug in topic_slugs:
+                assign_topic_to_article(session, article, slug)
+
+            processed_count += 1
+
+            if processed_count % 10 == 0:
+                console.print(f"  Processed {processed_count}/{len(articles)} articles...")
+
+        session.close()
+        console.print(f"\n[bold green]✓ Processing complete![/bold green] Tagged {processed_count} articles")
+
+    except Exception as e:
+        console.print(f"[red]Error:[/red] {e}")
+        import traceback
+        console.print(traceback.format_exc())
 
 
 @main.command()
@@ -123,14 +186,33 @@ def generate(force: bool, output: str) -> None:
 @main.command()
 def build() -> None:
     """Run full pipeline: fetch → process → generate."""
-    console.print("[bold cyan]feedrr build pipeline[/bold cyan]")
+    console.print("[bold cyan]feedrr build pipeline[/bold cyan]\n")
+
+    # Step 0: Initialize database if needed
+    db_path = get_data_dir() / "feedrr.db"
+    if not db_path.exists():
+        console.print("[bold]Step 0: Initializing database[/bold]")
+        ctx = click.get_current_context()
+        ctx.invoke(init_db)
+        console.print()
+
+    # Step 1: Fetch
+    console.print("[bold]Step 1: Fetching RSS feeds[/bold]")
+    ctx = click.get_current_context()
+    ctx.invoke(fetch)
     console.print()
-    console.print("[yellow]Full pipeline not yet implemented[/yellow]")
+
+    # Step 2: Process
+    console.print("[bold]Step 2: Processing articles[/bold]")
+    ctx.invoke(process)
     console.print()
-    console.print("Will execute:")
-    console.print("  1. Fetch RSS feeds")
-    console.print("  2. Process with LLM")
-    console.print("  3. Generate static site")
+
+    # Step 3: Generate (not yet implemented)
+    console.print("[bold]Step 3: Generating static site[/bold]")
+    console.print("[yellow]Static site generation not yet implemented[/yellow]")
+    console.print()
+
+    console.print("[bold green]✓ Build pipeline complete![/bold green]")
 
 
 @main.command()

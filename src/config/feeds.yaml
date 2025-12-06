@@ -1,5 +1,9 @@
 # RSS Feed Sources Configuration
 # Add your RSS feeds here
+#
+# Note: Some feeds may be rate-limited or blocked (e.g., The Verge returns 420 errors).
+# The fetcher handles these gracefully - failed feeds are logged but don't stop processing.
+# Articles from failed feeds are skipped and the build continues with successful sources.
 
 sources:
   - name: "Hacker News"
@@ -17,7 +21,7 @@ sources:
   - name: "The Verge"
     feed_url: "https://www.theverge.com/rss/index.xml"
     website_url: "https://www.theverge.com"
-    enabled: true
+    enabled: true  # Note: This feed is rate-limited and may return 420 errors
     category: "tech"
 
   # Example: Add more feeds as needed

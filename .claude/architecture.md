@@ -80,7 +80,10 @@ feedrr/
 ├── data/                # SQLite database
 │   └── feedrr.db
 │
-├── docs/                # Generated static site (GitHub Pages)
+├── docs/                # Project documentation
+│   └── DEVELOPMENT.md
+│
+├── site/                # Generated static site (GitHub Pages)
 │   └── (generated files)
 │
 ├── feeds.yaml           # RSS feed configuration
@@ -131,7 +134,7 @@ feedrr/
 3. **Generate Phase**
    - Query database for articles
    - Render Jinja2 templates
-   - Output static HTML to `/docs`
+   - Output static HTML to `/site`
    - Copy static assets
 
 4. **Deploy Phase**

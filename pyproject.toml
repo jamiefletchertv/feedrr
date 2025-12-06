@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "feedrr"
+version = "0.1.0"
+description = "RSS/News Aggregator with AI-powered topic tagging and content deduplication"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [
+    {name = "feedrr team"}
+]
+dependencies = [
+    # RSS Feed Processing
+    "feedparser>=6.0.10",
+    "requests>=2.31.0",
+    "python-dateutil>=2.8.2",
+
+    # LLM & NLP
+    "sentence-transformers>=2.2.2",
+    "torch>=2.0.0",
+    "numpy>=1.24.0",
+
+    # Database
+    "sqlalchemy>=2.0.0",
+
+    # Static Site Generation
+    "jinja2>=3.1.2",
+    "markdown>=3.5",
+    "pyyaml>=6.0",
+
+    # Utilities
+    "click>=8.1.0",
+    "python-dotenv>=1.0.0",
+    "rich>=13.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+    "mypy>=1.5.0",
+]
+
+[project.scripts]
+feedrr = "feedrr.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+target-version = ['py311']
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true

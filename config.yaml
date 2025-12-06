@@ -1,0 +1,56 @@
+# feedrr Application Configuration
+
+app:
+  name: "feedrr"
+  version: "0.1.0"
+  timezone: "UTC"
+
+database:
+  path: "data/feedrr.db"
+  backup_enabled: true
+  backup_count: 7
+
+llm:
+  model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  model_cache_dir: "data/models"
+  dedup_threshold: 0.85
+  batch_size: 32
+
+topics:
+  - name: "Technology"
+    slug: "tech"
+    keywords: ["software", "hardware", "ai", "programming", "developer", "code"]
+  - name: "Science"
+    slug: "science"
+    keywords: ["research", "study", "discovery", "experiment", "scientific"]
+  - name: "Business"
+    slug: "business"
+    keywords: ["market", "company", "economy", "startup", "finance"]
+  - name: "Politics"
+    slug: "politics"
+    keywords: ["government", "election", "policy", "law", "political"]
+  - name: "Entertainment"
+    slug: "entertainment"
+    keywords: ["movie", "music", "tv", "gaming", "film"]
+  - name: "Sports"
+    slug: "sports"
+    keywords: ["game", "team", "player", "match", "championship"]
+
+fetcher:
+  timeout: 30
+  retry_attempts: 3
+  retry_delay: 5
+  user_agent: "feedrr/0.1.0 (+https://github.com/jamiefletchertv/feedrr)"
+  max_articles_per_feed: 50
+
+generator:
+  output_dir: "site"
+  articles_per_page: 20
+  recent_articles_count: 50
+  static_dirs: ["static"]
+  max_summary_length: 300
+
+deployment:
+  schedule_cron: "*/30 * * * *"  # Every 30 minutes
+  commit_author: "feedrr-bot"
+  commit_email: "bot@feedrr.local"

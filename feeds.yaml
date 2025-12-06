@@ -1,0 +1,28 @@
+# RSS Feed Sources Configuration
+# Add your RSS feeds here
+
+sources:
+  - name: "Hacker News"
+    feed_url: "https://news.ycombinator.com/rss"
+    website_url: "https://news.ycombinator.com"
+    enabled: true
+    category: "tech"
+
+  - name: "TechCrunch"
+    feed_url: "https://techcrunch.com/feed/"
+    website_url: "https://techcrunch.com"
+    enabled: true
+    category: "tech"
+
+  - name: "The Verge"
+    feed_url: "https://www.theverge.com/rss/index.xml"
+    website_url: "https://www.theverge.com"
+    enabled: true
+    category: "tech"
+
+  # Example: Add more feeds as needed
+  # - name: "Example Feed"
+  #   feed_url: "https://example.com/feed.xml"
+  #   website_url: "https://example.com"
+  #   enabled: false
+  #   category: "general"

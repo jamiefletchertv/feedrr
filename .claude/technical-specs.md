@@ -67,7 +67,7 @@ fetcher:
   user_agent: "feedrr/0.1.0 (+https://github.com/youruser/feedrr)"
 
 generator:
-  output_dir: "docs"
+  output_dir: "site"
   articles_per_page: 20
   recent_articles_count: 50
   static_dirs: ["static"]

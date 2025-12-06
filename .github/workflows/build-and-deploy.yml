@@ -1,0 +1,70 @@
+name: Build and Deploy to GitHub Pages
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'  # Every 30 minutes
+  workflow_dispatch:  # Allow manual trigger
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch all history for proper git operations
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Create virtual environment
+        run: uv venv
+
+      - name: Install dependencies
+        run: |
+          source .venv/bin/activate
+          uv pip install -e .
+
+      - name: Run full build pipeline
+        run: |
+          source .venv/bin/activate
+          feedrr build
+        continue-on-error: false
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "bot@feedrr.local"
+          git config --local user.name "feedrr-bot"
+
+      - name: Commit and push changes
+        run: |
+          git add site/ data/
+          git diff --quiet && git diff --staged --quiet || \
+          (git commit -m "Update feed: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" && \
+           git push)
+        continue-on-error: true
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

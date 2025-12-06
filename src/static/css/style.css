@@ -73,7 +73,30 @@ header p {
 .article a {
     text-decoration: none;
     color: inherit;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.article-image {
+    flex-shrink: 0;
+    width: 120px;
+    height: 90px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--bg-color);
+}
+
+.article-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     display: block;
+}
+
+.article-info {
+    flex: 1;
+    min-width: 0;
 }
 
 .article-meta {
@@ -192,6 +215,11 @@ footer a:hover {
     .topic-tag {
         font-size: 0.6875rem;
         padding: 0.25rem 0.625rem;
+    }
+
+    .article-image {
+        width: 100px;
+        height: 75px;
     }
 }
 

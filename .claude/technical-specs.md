@@ -2,7 +2,7 @@
 
 ## Configuration Files
 
-### feeds.yaml
+### src/config/feeds.yaml
 Configuration for RSS feed sources.
 
 ```yaml
@@ -26,7 +26,7 @@ sources:
     category: "tech"
 ```
 
-### config.yaml
+### src/config/config.yaml
 Application configuration.
 
 ```yaml

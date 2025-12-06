@@ -57,8 +57,8 @@ Open `site/index.html` in your browser to view the generated site.
 
 ## Configuration
 
-- **feeds.yaml** - Configure RSS feed sources
-- **config.yaml** - Application settings (LLM model, topics, etc.)
+- **src/config/feeds.yaml** - Configure RSS feed sources
+- **src/config/config.yaml** - Application settings (LLM model, topics, etc.)
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for detailed documentation.
 

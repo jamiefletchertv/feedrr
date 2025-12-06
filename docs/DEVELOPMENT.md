@@ -101,25 +101,32 @@ make clean
 feedrr/
 ├── .claude/              # Project documentation for LLM context
 ├── src/                  # Source code
-│   ├── fetcher/         # RSS feed fetching
-│   ├── processor/       # LLM processing
-│   ├── storage/         # Database operations
-│   └── generator/       # Static site generation
-├── templates/           # Jinja2 templates
-├── static/              # CSS/JS assets
+│   ├── feedrr/          # Main package
+│   │   ├── cli.py       # Command-line interface
+│   │   ├── fetcher/     # RSS feed fetching
+│   │   ├── processor/   # LLM processing
+│   │   ├── storage/     # Database operations
+│   │   └── generator/   # Static site generation
+│   ├── config/          # Configuration files
+│   │   ├── config.yaml  # App configuration
+│   │   └── feeds.yaml   # RSS feed sources
+│   ├── templates/       # Jinja2 templates
+│   └── static/          # CSS/JS assets
 ├── data/                # SQLite database & models
 ├── docs/                # Project documentation
+├── logs/                # Application logs
 ├── site/                # Generated static site (GitHub Pages)
-├── config.yaml          # App configuration
-├── feeds.yaml           # RSS feed sources
-└── pyproject.toml       # Project dependencies
+├── tests/               # Test files
+├── pyproject.toml       # Project dependencies
+├── Makefile             # Development commands
+└── README.md            # Project readme
 ```
 
 ## Configuration
 
 ### Adding RSS Feeds
 
-Edit `feeds.yaml`:
+Edit `src/config/feeds.yaml`:
 
 ```yaml
 sources:
@@ -132,7 +139,7 @@ sources:
 
 ### App Configuration
 
-Edit `config.yaml` to customize:
+Edit `src/config/config.yaml` to customize:
 - LLM model settings
 - Topic taxonomy
 - Fetcher behavior

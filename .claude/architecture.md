@@ -62,20 +62,23 @@ feedrr/
 │   └── technical-specs.md
 │
 ├── src/                  # Source code
-│   ├── fetcher/         # RSS feed fetching logic
-│   ├── processor/       # LLM processing (tagging, dedup)
-│   ├── storage/         # Database operations
-│   └── generator/       # Static site generation
-│
-├── templates/           # Jinja2 HTML templates
-│   ├── base.html
-│   ├── index.html
-│   ├── article.html
-│   └── topic.html
-│
-├── static/              # CSS/JS assets
-│   ├── css/
-│   └── js/
+│   ├── feedrr/          # Main package
+│   │   ├── cli.py       # Command-line interface
+│   │   ├── fetcher/     # RSS feed fetching logic
+│   │   ├── processor/   # LLM processing (tagging, dedup)
+│   │   ├── storage/     # Database operations
+│   │   └── generator/   # Static site generation
+│   ├── config/          # Configuration files
+│   │   ├── config.yaml  # Application configuration
+│   │   └── feeds.yaml   # RSS feed sources
+│   ├── templates/       # Jinja2 HTML templates
+│   │   ├── base.html
+│   │   ├── index.html
+│   │   ├── article.html
+│   │   └── topic.html
+│   └── static/          # CSS/JS assets
+│       ├── css/
+│       └── js/
 │
 ├── data/                # SQLite database
 │   └── feedrr.db
@@ -86,9 +89,10 @@ feedrr/
 ├── site/                # Generated static site (GitHub Pages)
 │   └── (generated files)
 │
-├── feeds.yaml           # RSS feed configuration
-├── config.yaml          # Application configuration
 ├── pyproject.toml       # Python project configuration
+├── Makefile             # Development commands
+├── .python-version      # Python version for uv
+├── .gitignore           # Git ignore rules
 └── README.md            # Project README
 ```
 

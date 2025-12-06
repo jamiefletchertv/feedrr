@@ -573,6 +573,19 @@ cython_debug/
 # LLM Model cache
 data/models/
 
+# Application logs
+logs/*.log
+logs/*.txt
+!logs/.gitkeep
+
+# Test results
+tests/results/
+.pytest_cache/
+htmlcov/
+*.cover
+coverage.xml
+.coverage
+
 # Generated static site (GitHub Pages will serve this)
 # We commit site/ for GitHub Pages deployment
 # site/

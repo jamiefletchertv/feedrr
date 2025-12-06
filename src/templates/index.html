@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul class="articles">
+    {% for article in articles %}
+    <li class="article">
+        <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">{{ article.source_name }}</span>
+                    <span class="article-date">{{ article.published_date }}</span>
+                </div>
+                <h2 class="article-title">{{ article.title }}</h2>
+                {% if article.content %}
+                <p class="article-content">{{ article.content | striptags | truncate(200) }}</p>
+                {% endif %}
+                {% if article.topics %}
+                <div class="article-topics">
+                    {% for topic in article.topics %}
+                    <span class="topic-tag">{{ topic }}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            <div class="article-image">
+                {% if article.image_url %}
+                <img src="{{ article.image_url }}" alt="{{ article.title }}" onerror="this.src='static/images/placeholder.svg'">
+                {% else %}
+                <img src="static/images/placeholder.svg" alt="{{ article.title }}">
+                {% endif %}
+            </div>
+        </a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% if not articles %}
+<div class="loading">
+    <p>No articles yet. Run <code>feedrr build</code> to fetch and process articles.</p>
+</div>
+{% endif %}
+{% endblock %}

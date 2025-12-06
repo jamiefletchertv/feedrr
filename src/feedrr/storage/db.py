@@ -55,6 +55,7 @@ def save_articles(session: Session, source: Source, articles_data: List[dict]) -
             url=article_data['url'],
             title=article_data['title'],
             content=article_data.get('content'),
+            image_url=article_data.get('image_url'),
             published_date=article_data.get('published_date'),
             source_id=source.id
         )

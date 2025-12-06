@@ -36,6 +36,7 @@ class Article(Base):
     url = Column(String(1000), unique=True, nullable=False)
     title = Column(String(500), nullable=False)
     content = Column(Text)
+    image_url = Column(String(1000))
     published_date = Column(DateTime)
     fetched_date = Column(DateTime, default=datetime.utcnow)
     source_id = Column(Integer, ForeignKey("sources.id"), nullable=False)

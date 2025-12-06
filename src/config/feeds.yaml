@@ -21,8 +21,14 @@ sources:
   - name: "The Verge"
     feed_url: "https://www.theverge.com/rss/index.xml"
     website_url: "https://www.theverge.com"
-    enabled: true  # Note: This feed is rate-limited and may return 420 errors
+    enabled: false  # Note: This feed is rate-limited and may return 420 errors
     category: "tech"
+
+  - name: "BBC News"
+    feed_url: "http://feeds.bbci.co.uk/news/rss.xml"
+    website_url: "https://www.bbc.com/news"
+    enabled: true
+    category: "news"
 
   # Example: Add more feeds as needed
   # - name: "Example Feed"

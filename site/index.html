@@ -3,119 +3,2281 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>feedrr - RSS Aggregator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            color: #667eea;
-        }
-        .status {
-            display: inline-block;
-            background: #fbbf24;
-            color: #78350f;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.1em;
-            color: #666;
-            margin-bottom: 15px;
-        }
-        .features {
-            margin: 30px 0;
-            text-align: left;
-        }
-        .feature {
-            padding: 10px 0;
-            display: flex;
-            align-items: center;
-        }
-        .feature::before {
-            content: "⏳";
-            margin-right: 10px;
-            font-size: 1.2em;
-        }
-        .feature.done::before {
-            content: "✅";
-        }
-        .links {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid #f0f0f0;
-        }
-        a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 0 10px;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .footer {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #999;
-        }
-    </style>
+    <meta name="description" content="feedrr - AI-powered RSS news aggregator">
+    <title>feedrr</title>
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>feedrr</h1>
-        <span class="status">🚧 Under Construction</span>
+        <p>AI-powered news aggregator</p>
+    </header>
 
-        <p>RSS/News Aggregator with AI-powered topic tagging and content deduplication.</p>
+    <main>
+        
+<ul class="articles">
+    
+    <li class="article">
+        <a href="https://www.bbc.com/sport/football/articles/cpvd0ynlpdjo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">England given UK-friendly World Cup kick-off times as Scotland face late finishes</h2>
+                
+                <p class="article-content">England are handed World Cup kick-off times which suit UK audiences - but Scotland fans face later finishes during next summer's tournament.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/2c8b/live/f3df29b0-d2ce-11f0-8515-51d0ca44214c.jpg" alt="England given UK-friendly World Cup kick-off times as Scotland face late finishes" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.economist.com/china/2025/12/04/the-general-who-refused-to-crush-tiananmens-protesters" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">The general who refused to crush Tiananmen's protesters</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="The general who refused to crush Tiananmen's protesters">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/06/is-it-time-to-refound-your-startup/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Is it time to ‘refound’ your startup?</h2>
+                
+                <p class="article-content">Sometimes, founding a startup just once isn’t enough.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">Business</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Is it time to ‘refound’ your startup?">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cr7l4n89lr1o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">US National Park Service removes free entry on MLK Day and Juneteenth</h2>
+                
+                <p class="article-content">The Trump administration is adding Flag Day, which is also President Trump's birthday, to its list of fee-free entry days at national parks.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/4b51/live/60a0b550-d2d4-11f0-8515-51d0ca44214c.jpg" alt="US National Park Service removes free entry on MLK Day and Juneteenth" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://sites.gatech.edu/omscsopencourseware/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">OMSCS Open Courseware</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="OMSCS Open Courseware">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/06/how-would-the-netflix-warner-bros-deal-reshape-hollywood/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">How would the Netflix-Warner Bros. deal reshape Hollywood?</h2>
+                
+                <p class="article-content">It’s only been a day since Netflix announced an $82.7 billion deal to acquire Warner Bros., and the acquisition has already been described as sending Hollywood into “full-blown panic mode,”...</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="How would the Netflix-Warner Bros. deal reshape Hollywood?">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/sport/formula1/articles/c2k4zd305z5o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">'F1 title decider could hardly be better set up'</h2>
+                
+                <p class="article-content">The maths and task seem simple for Lando Norris heading into the F1 title decider but Max Verstappen retains hope of "some Abu Dhabi magic".</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/a07b/live/524c8300-d2cd-11f0-8515-51d0ca44214c.jpg" alt="'F1 title decider could hardly be better set up'" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cpd61d0jl6no?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Deadly attack on kindergarten reported in Sudan</h2>
+                
+                <p class="article-content">Drone strikes on a town in South Kordofan on Thursday are said to have killed at least 50 people.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/d45d/live/8014d960-d2bc-11f0-9a50-7beb4a0b24cf.jpg" alt="Deadly attack on kindergarten reported in Sudan" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.beatworm.co.uk/blog/computers/perls-decline-was-cultural-not-technical" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Perl's Decline Was Cultural</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Perl's Decline Was Cultural">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cpd61w22e3no?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Four arrested over defacing of Crown Jewels display case at Tower of London</h2>
+                
+                <p class="article-content">The group Take Back Power says its members poured custard and apple crumble on the display.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/b529/live/5ae4bef0-d2a6-11f0-8d62-5f73703109c9.png" alt="Four arrested over defacing of Crown Jewels display case at Tower of London" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/c5yq9yr31mgo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Scottish Conservative peer defects to Reform UK</h2>
+                
+                <p class="article-content">Malcolm Offord appeared at a rally alongside Nigel Farage in Falkirk on Saturday to announce the move.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/6db5/live/b5ef9c40-d2b8-11f0-9fb5-5f3a3703a365.jpg" alt="Scottish Conservative peer defects to Reform UK" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/c0q5lejppeno?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">National Guardsman 'slowly healing' after being shot in Washington DC</h2>
+                
+                <p class="article-content">Andrew Wolfe, 24, is expected to remain in acute care with a head wound for a few more weeks, his family says.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/9efc/live/0ab890e0-d2ca-11f0-8515-51d0ca44214c.jpg" alt="National Guardsman 'slowly healing' after being shot in Washington DC" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://github.com/roriau0422/sfex-lang" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Show HN: SFX – A language where 0.1 and 0.2 = 0.3 and Context is first-class</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Show HN: SFX – A language where 0.1 and 0.2 = 0.3 and Context is first-class">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.ycombinator.com/companies/infisical/jobs/2pwGcK9-senior-full-stack-engineer-us-canada" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Infisical (YC W23) Is Hiring Engineers to Build the Modern OSS Security Stack</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Infisical (YC W23) Is Hiring Engineers to Build the Modern OSS Security Stack">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cn0k2858jj1o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Driving test touts offer instructors £250 monthly kickbacks</h2>
+                
+                <p class="article-content">Touts use instructor login details to bulk-book tests and sell them at a huge mark-up, the BBC finds.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/6c98/live/655f17c0-d113-11f0-8c06-f5d460985095.jpg" alt="Driving test touts offer instructors £250 monthly kickbacks" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/06/creator-ishowspeed-sued-for-allegedly-punching-choking-viral-humanoid-rizzbot/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Creator IShowSpeed sued for allegedly punching, choking viral humanoid Rizzbot</h2>
+                
+                <p class="article-content">Creator IShowSpeed sued after punching, choking viral humanoid Rizzbot.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Creator IShowSpeed sued for allegedly punching, choking viral humanoid Rizzbot">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cvg87j86xg3o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Young people are getting a 'raw deal', and that's good news for the Greens and Reform</h2>
+                
+                <p class="article-content">Frustration among voters under 30 is widespread, writes Laura Kuenssberg.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/c04b/live/32df9620-d1cd-11f0-a892-01d657345866.png" alt="Young people are getting a 'raw deal', and that's good news for the Greens and Reform" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/clydxj7my84o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Russia hits Ukraine as US reports progress in talks with Kyiv</h2>
+                
+                <p class="article-content">France's president condemns the attack and announces talks in London on Monday with Ukrainian, British and German leaders.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/11fb/live/f776d7c0-d2c0-11f0-9a50-7beb4a0b24cf.jpg" alt="Russia hits Ukraine as US reports progress in talks with Kyiv" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/videos/cr4de0x2xqvo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Watch: Australia wildfire rips through homes</h2>
+                
+                <p class="article-content">Multiple homes were left damaged after a wildfire swept through a coastal area north of Sydney.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/9ce1/live/c49e04e0-d2b1-11f0-9fb5-5f3a3703a365.jpg" alt="Watch: Australia wildfire rips through homes" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/ce86z84e947o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Bethlehem Christmas tree lights up for first time since start of Gaza war</h2>
+                
+                <p class="article-content">For the past two years all public Christmas celebrations have been cancelled in Bethlehem in the occupied West Bank.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/4ede/live/44268440-d2d4-11f0-9fb5-5f3a3703a365.jpg" alt="Bethlehem Christmas tree lights up for first time since start of Gaza war" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://info.arxiv.org/about/accessible_HTML.html" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">HTML as an Accessible Format for Papers</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="HTML as an Accessible Format for Papers">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/sport/cricket/articles/cqlk0q5n0r4o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">England humiliated by 'second-string' Australia - Vaughan</h2>
+                
+                <p class="article-content">England have been humiliated by Australia in the Ashes and are at risk of "psychological damage", says former captain Michael Vaughan.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/5c5e/live/65423770-d2b4-11f0-9fb5-5f3a3703a365.jpg" alt="England humiliated by 'second-string' Australia - Vaughan" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="http://www.tinycorelinux.net/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Tiny Core Linux: a 23 MB Linux distro with graphical desktop</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Tiny Core Linux: a 23 MB Linux distro with graphical desktop">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/06/spotify-wrapped-2024-is-almost-here-its-time-to-explore-all-the-copycats/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">After you check out your Spotify Wrapped 2025, explore these copycats</h2>
+                
+                <p class="article-content">Spotify’s annual Wrapped feature just dropped, giving listeners a fun, personalized summary of their listening habits. It has gained immense popularity over the years, and as a result, many...</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="After you check out your Spotify Wrapped 2025, explore these copycats">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://grapheneos.social/@GrapheneOS/115647408229616018" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">GrapheneOS is the only Android OS providing full security patches</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="GrapheneOS is the only Android OS providing full security patches">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://telefoncek.si/2025/02/2025-02-10-hidden-microphone-on-nanokvm/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">How I discovered a hidden microphone on a Chinese NanoKVM</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="How I discovered a hidden microphone on a Chinese NanoKVM">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://lemire.me/blog/2025/12/05/why-speed-matters/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Why Speed Matters</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Why Speed Matters">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://considerthebulldog.com/tte-tpu/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Touching the Elephant – TPUs</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Touching the Elephant – TPUs">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.psychiatrymargins.com/p/autisms-confusing-cousins" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Autism's confusing cousins</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Autism's confusing cousins">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/c773vm4n3n0o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Trans women will not be allowed to attend main Labour Women's Conference events</h2>
+                
+                <p class="article-content">The conference will take place in 2026 after being cancelled for a year in light of the Supreme Court's gender ruling.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/1c2e/live/3bd47820-d242-11f0-a892-01d657345866.jpg" alt="Trans women will not be allowed to attend main Labour Women's Conference events" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cx2pvxdn9v4o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">'Life being stressful is not an illness' - GPs on mental health over-diagnosis</h2>
+                
+                <p class="article-content">Hundreds of GPs in England tell the BBC they are also worried about a lack of help for patients.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/d561/live/8d077230-d1fa-11f0-a732-cbe19f3047f2.jpg" alt="'Life being stressful is not an illness' - GPs on mental health over-diagnosis" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://dmz.rs/lif2025_en" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Linux Instal Fest Belgrade</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Linux Instal Fest Belgrade">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/c8dy6395dqyo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Charities welcome new law banning puppy smuggling</h2>
+                
+                <p class="article-content">But some are worried that the ban will have consequences for rare dog breeders and those who rescue dogs from overseas.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/b1de/live/584e3990-d27a-11f0-af1a-a13b3bc97819.jpg" alt="Charities welcome new law banning puppy smuggling" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://old.reddit.com/r/LegalAdviceUK/comments/1pc7999/my_schizophrenic_sister_hospitalised_herself/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Schizophrenia sufferer mistakes smart fridge ad for psychotic episode</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Schizophrenia sufferer mistakes smart fridge ad for psychotic episode">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://writings.stephenwolfram.com/2025/12/instant-supercompute-launching-wolfram-compute-services/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Wolfram Compute Services</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Wolfram Compute Services">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://dmitry.gr/?r=05.Projects&proj=27.%20rePalm#pixter" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">PalmOS on FisherPrice Pixter Toy</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="PalmOS on FisherPrice Pixter Toy">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://haveibeenflocked.com/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Have I been Flocked? – Check if your license plate is being watched</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Have I been Flocked? – Check if your license plate is being watched">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/digital-artist-beeple-put-his-face-on-a-100k-robot-dog-next-to-elon-musk-and-picasso-it-sold-first/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Digital artist Beeple put his face on a $100K robot dog next to Elon Musk and Picasso – it sold first</h2>
+                
+                <p class="article-content">The project marks at least the second time Winkelmann has become the art world's main character.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Digital artist Beeple put his face on a $100K robot dog next to Elon Musk and Picasso – it sold first">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cp858lmrn74o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">What should you do if you dislike your friend's partner?</h2>
+                
+                <p class="article-content">Former friends Chrishell Stause and Emma Hernan have argued on and off-camera in the Netflix reality show.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/e84d/live/5d0ef150-cba8-11f0-9b12-8751a987e19a.jpg" alt="What should you do if you dislike your friend's partner?" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cd0k2r2jpg4o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Single women risk rape and exploitation in search for better life in Europe</h2>
+                
+                <p class="article-content">Esther says she faced sexual violence on her journey to Europe after fleeing abuse in Nigeria.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/1e2e/live/8c6e4d30-cf8e-11f0-aa60-9b31093c6070.jpg" alt="Single women risk rape and exploitation in search for better life in Europe" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cgl6zejp75wo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Failed Sarah Ferguson-backed app received  £1m taxpayers' money</h2>
+                
+                <p class="article-content">The former Duchess was an "ambassador" for vVoosh, founded by her friend Manuel Fernandez.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/66ba/live/3e7ecdb0-d1ec-11f0-9fc3-51ad94ee6fea.jpg" alt="Failed Sarah Ferguson-backed app received  £1m taxpayers' money" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/ex-googlers-yoodli-triples-valuation-to-300m-with-ai-built-to-assist-not-replace-people/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Ex-Googler’s Yoodli triples valuation to $300M+ with AI built to assist, not replace, people</h2>
+                
+                <p class="article-content">Yoodli counts Google, Snowflake, and Databricks among its customers.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Ex-Googler’s Yoodli triples valuation to $300M+ with AI built to assist, not replace, people">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/ai-synthetic-research-startup-aaru-raised-a-series-a-at-a-1b-headline-valuation/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Sources: AI synthetic research startup Aaru raised a Series A at a $1B ‘headline’ valuation</h2>
+                
+                <p class="article-content">The one-year-old startup, which does market research on simulated populations, had a multi-tier valuation round, sources tell TechCrunch.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">Business</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Sources: AI synthetic research startup Aaru raised a Series A at a $1B ‘headline’ valuation">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/waymo-to-issue-software-recall-over-how-robotaxis-behave-around-school-buses/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Waymo to issue software recall over how robotaxis behave around school buses</h2>
+                
+                <p class="article-content">The voluntary recall comes as scrutiny by federal regulators and local school district officials increases.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Waymo to issue software recall over how robotaxis behave around school buses">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/video/aws-needs-you-to-believe-in-ai-agents/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">AWS needs you to believe in AI agents</h2>
+                
+                <p class="article-content">AWS announced a wave of new AI agent tools at re:Invent 2025, but can Amazon actually catch up to the AI leaders? While the cloud giant is betting big on enterprise AI with its third-gen chip and...</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">Technology</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="AWS needs you to believe in AI agents">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/feds-find-more-complaints-of-teslas-fsd-running-red-lights-and-crossing-lanes/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Feds find more complaints of Tesla’s FSD running red lights and crossing lanes</h2>
+                
+                <p class="article-content">The National Highway Traffic Safety Administration has identified at least 80 incidents.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Feds find more complaints of Tesla’s FSD running red lights and crossing lanes">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.brendangregg.com/blog//2025-12-05/leaving-intel.html" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Leaving Intel</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Leaving Intel">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/this-startup-built-a-fitbit-for-your-brain-to-combat-chronic-stress/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">This startup built a Fitbit for your brain to combat chronic stress</h2>
+                
+                <p class="article-content">Forenza collaborated with data scientists and biomedical engineers to develop Awear, a small device worn behind the ear for continuous brainwave monitoring. The device transmits results to an app,...</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="This startup built a Fitbit for your brain to combat chronic stress">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/spacex-reportedly-in-talks-for-secondary-sale-at-800b-valuation-which-would-make-it-americas-most-valuable-private-company/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">SpaceX reportedly in talks for secondary sale at $800B valuation, which would make it America’s most valuable private company</h2>
+                
+                <p class="article-content">The eye-popping figure reflects how routine mega-valuations have become in private markets.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="SpaceX reportedly in talks for secondary sale at $800B valuation, which would make it America’s most valuable private company">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/meta-acquires-ai-device-startup-limitless/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Meta acquires AI device startup Limitless</h2>
+                
+                <p class="article-content">Limitless said it shares Meta's vision of bringing personal superintelligence to everyone.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Meta acquires AI device startup Limitless">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/chatgpts-user-growth-has-slowed-report-finds/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">ChatGPT’s user growth has slowed, report finds</h2>
+                
+                <p class="article-content">ChatGPT's global monthly active users only grew by around 5% from August to November, while Gemini's users grew by about 30%.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="ChatGPT’s user growth has slowed, report finds">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/aws-reinvent-was-an-all-in-pitch-for-ai-customers-might-not-be-ready/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">AWS re:Invent was an all-in pitch for AI. Customers might not be ready.</h2>
+                
+                <p class="article-content">AWS is releasing a lot of new AI tech, but the cloud infrastructure giant's enterprise customers may not be ready for it yet.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">Technology</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="AWS re:Invent was an all-in pitch for AI. Customers might not be ready.">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/esim-adoption-is-on-the-rise-thanks-to-travel-and-device-compatibility/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">eSIM adoption is on the rise thanks to travel and device compatibility</h2>
+                
+                <p class="article-content">As a technology, eSIM has been around for a decade now. However, global eSIM adoption was around 3% last year and will only cross 5% this year. Despite these figures, analysts, eSIM-providing...</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="eSIM adoption is on the rise thanks to travel and device compatibility">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/new-knoway-robotaxis-cause-chaos-in-upcoming-grand-theft-auto-online-dlc/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">New ‘KnoWay’ robotaxis cause chaos in upcoming Grand Theft Auto Online DLC</h2>
+                
+                <p class="article-content">The inclusion of the Waymo look-a-likes appears to be part of a larger storyline that will encourage players to "stop the development of a mass surveillance network."</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="New ‘KnoWay’ robotaxis cause chaos in upcoming Grand Theft Auto Online DLC">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/new-streaming-channel-launches-to-give-viewers-a-peek-into-city-council-meetings/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">New streaming channel launches to give viewers a peek into city council meetings</h2>
+                
+                <p class="article-content">Hamlet TV is a way to help keep citizens informed of what's happening inside local governments.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="New streaming channel launches to give viewers a peek into city council meetings">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://corrode.dev/blog/defensive-programming/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Patterns for Defensive Programming in Rust</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Patterns for Defensive Programming in Rust">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://blog.google/technology/developers/gemini-3-pro-vision/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Gemini 3 Pro: the frontier of vision AI</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Gemini 3 Pro: the frontier of vision AI">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/the-new-york-times-is-suing-perplexity-for-copyright-infringement/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">The New York Times is suing Perplexity for copyright infringement</h2>
+                
+                <p class="article-content">The New York Times filed a copyright lawsuit against Perplexity, joining other publishers using legal action as leverage to force AI companies into licensing deals that compensate content creators.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="The New York Times is suing Perplexity for copyright infringement">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://blog.cloudflare.com/5-december-2025-outage/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Cloudflare outage on December 5, 2025</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Cloudflare outage on December 5, 2025">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/meta-signs-commercial-ai-data-agreements-with-publishers-to-offer-real-time-news-on-meta-ai/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Meta signs commercial AI data agreements with publishers to offer real-time news on Meta AI</h2>
+                
+                <p class="article-content">Meta is partnering with CNN, Fox News, Fox Sports, Le Monde Group, the People Inc. portfolio of media brands, The Daily Caller, The Washington Examiner, and USA Today.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Meta signs commercial AI data agreements with publishers to offer real-time news on Meta AI">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/energy-storage-industry-set-aggressive-goals-for-2025-and-already-crushed-them/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Energy storage industry set aggressive goals for 2025 — and already crushed them</h2>
+                
+                <p class="article-content">The battery storage industry in the U.S. has grown in leaps and bounds in recent years, surpassing its most aggressive targets to become one of the largest new sources of power on the grid.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Energy storage industry set aggressive goals for 2025 — and already crushed them">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/in-its-first-dsa-penalty-eu-fines-x-e120m-for-deceptive-blue-check-verification-system/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">TechCrunch</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">In its first DSA penalty, EU fines X €120M for ‘deceptive’ blue check verification system</h2>
+                
+                <p class="article-content">The EC is taking issue with the fact that X, the social network formerly known as Twitter, has been allowing anyone to buy a "blue checkmark," the platform's long-standing symbol that a user has...</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="In its first DSA penalty, EU fines X €120M for ‘deceptive’ blue check verification system">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://about.netflix.com/en/news/netflix-to-acquire-warner-bros" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Netflix to Acquire Warner Bros</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Netflix to Acquire Warner Bros">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/videos/c8r3pgr5jdxo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Giant purple dinosaur caught fly-tipping on CCTV</h2>
+                
+                <p class="article-content">The brightly coloured rogue raptor is spotted looking around before dumping rubbish in a street.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/a0ba/live/11f7fd00-d1c6-11f0-9fb5-5f3a3703a365.jpg" alt="Giant purple dinosaur caught fly-tipping on CCTV" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/c9qe0yyj19zo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">'I let loose' - artist paints every spare inch of her house</h2>
+                
+                <p class="article-content">In an antidote to minimalist interiors, artist Emily Powell turns her home into a work of art.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/1544/live/b500bab0-d08f-11f0-9508-4b2ee64d533f.jpg" alt="'I let loose' - artist paints every spare inch of her house" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://netflixtechblog.com/av1-now-powering-30-of-netflix-streaming-02f592242d80" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 05, 2025</span>
+                </div>
+                <h2 class="article-title">Netflix’s AV1 Journey: From Android to TVs and Beyond</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">Entertainment</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Netflix’s AV1 Journey: From Android to TVs and Beyond">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.co.uk/sounds/play/m002mz6w?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 04, 2025</span>
+                </div>
+                <h2 class="article-title">Porn and Masculinity: How to Teach Kids about Sex and Relationships</h2>
+                
+                <p class="article-content">Musician Jordan Stephens on why we need sex education fit for the digital age.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/images/ic/240x135/p0lgrqgm.jpg" alt="Porn and Masculinity: How to Teach Kids about Sex and Relationships" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://bernsteinbear.com/blog/toy-abstract-interpretation/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 04, 2025</span>
+                </div>
+                <h2 class="article-title">Abstract Interpretation in the Toy Optimizer</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Abstract Interpretation in the Toy Optimizer">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.co.uk/sounds/play/p0mldzp8?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 03, 2025</span>
+                </div>
+                <h2 class="article-title">Is Russia Really Ready For War With Europe?</h2>
+                
+                <p class="article-content">And is the UK really ready to get closer to the EU?</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/images/ic/240x135/p0l7jnbt.jpg" alt="Is Russia Really Ready For War With Europe?" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://petapixel.com/2025/11/13/this-guy-built-a-compact-camera-using-an-optical-mouse/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 03, 2025</span>
+                </div>
+                <h2 class="article-title">A compact camera built using an optical mouse</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="A compact camera built using an optical mouse">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cx2pel4qd08o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 03, 2025</span>
+                </div>
+                <h2 class="article-title">Controversial 30ft nude gladiator returns to town</h2>
+                
+                <p class="article-content">Three years after he was banned by the council, the 30ft (9m) statue dubbed Golden Balls reappears.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/b9bc/live/a0ce1e10-d027-11f0-a0e2-816fae62ea61.jpg" alt="Controversial 30ft nude gladiator returns to town" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.co.uk/iplayer/episode/m000ryd0/pirates-of-the-caribbean-salazars-revenge?at_mid=Ucl6fIUx1a&at_campaign=Pirates_of_the_Caribbean_Salazars_Revenge&at_medium=display_ad&at_campaign_type=owned&at_nation=NET&at_audience_id=SS&at_product=iplayer&at_brand=m000ryd0&at_ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consumption&at_link_title=Pirates_of_the_Caribbean_Salazars_Revenge&at_bbc_team=BBC&at_creation=Film" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 03, 2025</span>
+                </div>
+                <h2 class="article-title">Johnny Depp braves the perilous seas as Captain Jack Sparrow</h2>
+                
+                <p class="article-content">Young Henry Turner seeks out Jack Sparrow to help him locate Poseidon's trident.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/0a91/live/38664a70-d034-11f0-8c06-f5d460985095.jpg" alt="Johnny Depp braves the perilous seas as Captain Jack Sparrow" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.spacecamera.co/articles/2020/3/3/gene-cernans-missing-lunar-surface-camera" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 02, 2025</span>
+                </div>
+                <h2 class="article-title">Finding Gene Cernan's Missing Moon Camera</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Finding Gene Cernan's Missing Moon Camera">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://frinkiac.com/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 02, 2025</span>
+                </div>
+                <h2 class="article-title">Frinkiac – 3M "The Simpsons" Screencaps</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Frinkiac – 3M "The Simpsons" Screencaps">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.fieldnotes.nautilus.quest/p/the-kids-who-ran-away-to-1960s-san" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 02, 2025</span>
+                </div>
+                <h2 class="article-title">Kids who ran away to 1960s San Francisco</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Kids who ran away to 1960s San Francisco">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://alexwlchan.net/2025/detecting-av1-videos/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 02, 2025</span>
+                </div>
+                <h2 class="article-title">Detecting AV1-encoded videos with Python</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Detecting AV1-encoded videos with Python">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.ursulakleguin.com/blog/3-the-absent-silence" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 02, 2025</span>
+                </div>
+                <h2 class="article-title">The Absent Silence (2010)</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="The Absent Silence (2010)">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cm28y24l9dvo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 02, 2025</span>
+                </div>
+                <h2 class="article-title">How to decorate your Christmas tree to create joy</h2>
+                
+                <p class="article-content">When you should put the tree up and how whether it's real or fake should change how you decorate it.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/5159/live/84cb98e0-cec5-11f0-81f3-a1b2f542a1e8.jpg" alt="How to decorate your Christmas tree to create joy" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://docs.dawndrums.tn/blog/dd-rev1.1-arch/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 01, 2025</span>
+                </div>
+                <h2 class="article-title">Divine D native Linux open-source mobile system – Rev. 1.1 Hardware Architecture</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Divine D native Linux open-source mobile system – Rev. 1.1 Hardware Architecture">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://youtu.be/nKVq9u52A-c?si=KVY6AK7tsudqnbJN" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Nov 30, 2025</span>
+                </div>
+                <h2 class="article-title">Making tiny 0.1cc two stroke engine from scratch</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Making tiny 0.1cc two stroke engine from scratch">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://github.com/Tongyi-MAI/Z-Image" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Nov 30, 2025</span>
+                </div>
+                <h2 class="article-title">Z-Image: Powerful and highly efficient image generation model with 6B parameters</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Z-Image: Powerful and highly efficient image generation model with 6B parameters">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://michael.stapelberg.ch/posts/2025-11-29-self-hosting-photos-with-immich/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Nov 30, 2025</span>
+                </div>
+                <h2 class="article-title">Self-hosting my photos with Immich</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Self-hosting my photos with Immich">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://maphappenings.com/2025/11/06/bee-maps/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Nov 30, 2025</span>
+                </div>
+                <h2 class="article-title">Mapping Amazing: Bee Maps</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Mapping Amazing: Bee Maps">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://blog.chrislewis.au/the-unexpected-effectiveness-of-one-shot-decompilation-with-claude/" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Nov 28, 2025</span>
+                </div>
+                <h2 class="article-title">The unexpected effectiveness of one-shot decompilation with Claude</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="The unexpected effectiveness of one-shot decompilation with Claude">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.co.uk/iplayer/episode/m0012wqp/last-christmas?at_mid=ktBlVWN3b2&at_campaign=Last_Christmas&at_medium=display_ad&at_campaign_type=owned&at_nation=NET&at_audience_id=SS&at_product=iplayer&at_brand=m0012wqp&at_ptr_name=bbc&at_ptr_type=media&at_format=image&at_objective=consumption&at_link_title=Last_Christmas&at_bbc_team=BBC" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Nov 12, 2025</span>
+                </div>
+                <h2 class="article-title">A festive favourite to spark your Christmas spirit</h2>
+                
+                <p class="article-content">The feel-good Christmas story, perfect for cosy winter nights</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/6248/live/f5c774e0-cb7f-11f0-8c06-f5d460985095.jpg" alt="A festive favourite to spark your Christmas spirit" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.bbc.co.uk/news/10628994?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Apr 30, 2025</span>
+                </div>
+                <h2 class="article-title">BBC News app</h2>
+                
+                <p class="article-content">Top stories, breaking news, live reporting, and follow news topics that match your interests</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/2cf6/live/d1e71250-9509-11ee-8df3-1d2983d8814f.png" alt="BBC News app" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+</ul>
 
-        <div class="features">
-            <div class="feature done">Phase 1: Project Setup Complete</div>
-            <div class="feature">Phase 2: RSS Feed Processing (In Progress)</div>
-            <div class="feature">Phase 3: LLM Integration</div>
-            <div class="feature">Phase 4: Static Site Generation</div>
-            <div class="feature">Phase 5: Web UI</div>
-        </div>
 
-        <p><strong>This site will be updated automatically as we build the application.</strong></p>
 
-        <div class="links">
-            <a href="https://github.com/jamiefletchertv/feedrr" target="_blank">GitHub Repository</a>
-            <a href="https://github.com/jamiefletchertv/feedrr/blob/main/README.md" target="_blank">Documentation</a>
-        </div>
+    </main>
 
-        <div class="footer">
-            Last updated: <span id="date"></span>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('date').textContent = new Date().toLocaleString();
-    </script>
+    <footer>
+        <p>
+            Generated by <a href="https://github.com/jamiefletchertv/feedrr">feedrr</a> •
+            Last updated: 2025-12-06 20:21 UTC
+        </p>
+    </footer>
 </body>
 </html>

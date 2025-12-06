@@ -20,6 +20,8 @@ from feedrr.storage.db import (
 )
 from feedrr.fetcher.rss import fetch_feed
 from feedrr.processor.topics import assign_topics
+from feedrr.generator.site import generate_site
+from feedrr.config import get_site_dir
 
 console = Console()
 
@@ -175,12 +177,41 @@ def process(limit: int | None) -> None:
 
 
 @main.command()
-@click.option("--force", is_flag=True, help="Force regeneration of all pages")
-@click.option("--output", default="site", help="Output directory")
-def generate(force: bool, output: str) -> None:
+@click.option("--max-articles", type=int, default=100, help="Maximum number of articles to include")
+@click.option("--output", type=click.Path(), help="Output directory (default: site/)")
+def generate(max_articles: int, output: str | None) -> None:
     """Generate static site."""
-    console.print("[yellow]Static site generation not yet implemented[/yellow]")
-    console.print("Coming in Phase 4: Static Site Generation")
+    try:
+        # Get database path
+        db_path = get_data_dir() / "feedrr.db"
+        if not db_path.exists():
+            console.print("[red]Error:[/red] Database not found. Run 'feedrr init-db' first")
+            return
+
+        # Determine output directory
+        if output:
+            output_dir = Path(output)
+        else:
+            output_dir = get_site_dir()
+
+        session = get_session(str(db_path))
+
+        console.print(f"[cyan]Generating static site...[/cyan]")
+        console.print(f"  Output: {output_dir}")
+        console.print(f"  Max articles: {max_articles}")
+
+        # Generate site
+        generate_site(session, output_dir, max_articles=max_articles)
+
+        session.close()
+
+        console.print(f"\n[bold green]✓ Site generated![/bold green]")
+        console.print(f"  Open {output_dir / 'index.html'} in your browser")
+
+    except Exception as e:
+        console.print(f"[red]Error:[/red] {e}")
+        import traceback
+        console.print(traceback.format_exc())
 
 
 @main.command()
@@ -207,9 +238,9 @@ def build() -> None:
     ctx.invoke(process)
     console.print()
 
-    # Step 3: Generate (not yet implemented)
+    # Step 3: Generate
     console.print("[bold]Step 3: Generating static site[/bold]")
-    console.print("[yellow]Static site generation not yet implemented[/yellow]")
+    ctx.invoke(generate)
     console.print()
 
     console.print("[bold green]✓ Build pipeline complete![/bold green]")

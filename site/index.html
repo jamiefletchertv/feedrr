@@ -3,119 +3,971 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>feedrr - RSS Aggregator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .container {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            max-width: 600px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            text-align: center;
-        }
-        h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            color: #667eea;
-        }
-        .status {
-            display: inline-block;
-            background: #fbbf24;
-            color: #78350f;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        p {
-            font-size: 1.1em;
-            color: #666;
-            margin-bottom: 15px;
-        }
-        .features {
-            margin: 30px 0;
-            text-align: left;
-        }
-        .feature {
-            padding: 10px 0;
-            display: flex;
-            align-items: center;
-        }
-        .feature::before {
-            content: "⏳";
-            margin-right: 10px;
-            font-size: 1.2em;
-        }
-        .feature.done::before {
-            content: "✅";
-        }
-        .links {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 2px solid #f0f0f0;
-        }
-        a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            margin: 0 10px;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .footer {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #999;
-        }
-    </style>
+    <meta name="description" content="feedrr - AI-powered RSS news aggregator">
+    <title>feedrr</title>
+    <link rel="stylesheet" href="static/css/style.css">
 </head>
 <body>
-    <div class="container">
+    <header>
         <h1>feedrr</h1>
-        <span class="status">🚧 Under Construction</span>
+        <p>AI-powered news aggregator</p>
+    </header>
 
-        <p>RSS/News Aggregator with AI-powered topic tagging and content deduplication.</p>
+    <main>
+        
+<ul class="articles">
+    
+    <li class="article">
+        <a href="https://www.beatworm.co.uk/blog/computers/perls-decline-was-cultural-not-technical" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Perl's Decline Was Cultural</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://github.com/roriau0422/sfex-lang" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Show HN: SFX – A language where 0.1 and 0.2 = 0.3 and Context is first-class</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.ycombinator.com/companies/infisical/jobs/2pwGcK9-senior-full-stack-engineer-us-canada" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Infisical (YC W23) Is Hiring Engineers to Build the Modern OSS Security Stack</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/06/creator-ishowspeed-sued-for-allegedly-punching-choking-viral-humanoid-rizzbot/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Creator IShowSpeed sued for allegedly punching, choking viral humanoid Rizzbot</h2>
+            
+            <p class="article-content">Creator IShowSpeed sued after punching, choking viral humanoid Rizzbot.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://info.arxiv.org/about/accessible_HTML.html" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">HTML as an Accessible Format for Papers</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="http://www.tinycorelinux.net/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Tiny Core Linux: a 23 MB Linux distro with graphical desktop</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/06/spotify-wrapped-2024-is-almost-here-its-time-to-explore-all-the-copycats/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">After you check out your Spotify Wrapped 2025, explore these copycats</h2>
+            
+            <p class="article-content">Spotify’s annual Wrapped feature just dropped, giving listeners a fun, personalized summary of their listening habits. It has gained immense popularity over the years, and as a result, many...</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://grapheneos.social/@GrapheneOS/115647408229616018" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">GrapheneOS is the only Android OS providing full security patches</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://telefoncek.si/2025/02/2025-02-10-hidden-microphone-on-nanokvm/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">How I discovered a hidden microphone on a Chinese NanoKVM</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://lemire.me/blog/2025/12/05/why-speed-matters/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Why Speed Matters</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://considerthebulldog.com/tte-tpu/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Touching the Elephant – TPUs</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://dmz.rs/lif2025_en" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Linux Instal Fest Belgrade</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://old.reddit.com/r/LegalAdviceUK/comments/1pc7999/my_schizophrenic_sister_hospitalised_herself/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Schizophrenia sufferer mistakes smart fridge ad for psychotic episode</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://writings.stephenwolfram.com/2025/12/instant-supercompute-launching-wolfram-compute-services/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Wolfram Compute Services</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://dmitry.gr/?r=05.Projects&proj=27.%20rePalm#pixter" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">PalmOS on FisherPrice Pixter Toy</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://haveibeenflocked.com/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Have I been Flocked? – Check if your license plate is being watched</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/digital-artist-beeple-put-his-face-on-a-100k-robot-dog-next-to-elon-musk-and-picasso-it-sold-first/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 06, 2025</span>
+            </div>
+            <h2 class="article-title">Digital artist Beeple put his face on a $100K robot dog next to Elon Musk and Picasso – it sold first</h2>
+            
+            <p class="article-content">The project marks at least the second time Winkelmann has become the art world's main character.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/ex-googlers-yoodli-triples-valuation-to-300m-with-ai-built-to-assist-not-replace-people/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Ex-Googler’s Yoodli triples valuation to $300M+ with AI built to assist, not replace, people</h2>
+            
+            <p class="article-content">Yoodli counts Google, Snowflake, and Databricks among its customers.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/ai-synthetic-research-startup-aaru-raised-a-series-a-at-a-1b-headline-valuation/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Sources: AI synthetic research startup Aaru raised a Series A at a $1B ‘headline’ valuation</h2>
+            
+            <p class="article-content">The one-year-old startup, which does market research on simulated populations, had a multi-tier valuation round, sources tell TechCrunch.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">Business</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/waymo-to-issue-software-recall-over-how-robotaxis-behave-around-school-buses/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Waymo to issue software recall over how robotaxis behave around school buses</h2>
+            
+            <p class="article-content">The voluntary recall comes as scrutiny by federal regulators and local school district officials increases.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/video/aws-needs-you-to-believe-in-ai-agents/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">AWS needs you to believe in AI agents</h2>
+            
+            <p class="article-content">AWS announced a wave of new AI agent tools at re:Invent 2025, but can Amazon actually catch up to the AI leaders? While the cloud giant is betting big on enterprise AI with its third-gen chip and...</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">Technology</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/feds-find-more-complaints-of-teslas-fsd-running-red-lights-and-crossing-lanes/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Feds find more complaints of Tesla’s FSD running red lights and crossing lanes</h2>
+            
+            <p class="article-content">The National Highway Traffic Safety Administration has identified at least 80 incidents.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.brendangregg.com/blog//2025-12-05/leaving-intel.html" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Leaving Intel</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/this-startup-built-a-fitbit-for-your-brain-to-combat-chronic-stress/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">This startup built a Fitbit for your brain to combat chronic stress</h2>
+            
+            <p class="article-content">Forenza collaborated with data scientists and biomedical engineers to develop Awear, a small device worn behind the ear for continuous brainwave monitoring. The device transmits results to an app,...</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/spacex-reportedly-in-talks-for-secondary-sale-at-800b-valuation-which-would-make-it-americas-most-valuable-private-company/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">SpaceX reportedly in talks for secondary sale at $800B valuation, which would make it America’s most valuable private company</h2>
+            
+            <p class="article-content">The eye-popping figure reflects how routine mega-valuations have become in private markets.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/meta-acquires-ai-device-startup-limitless/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Meta acquires AI device startup Limitless</h2>
+            
+            <p class="article-content">Limitless said it shares Meta's vision of bringing personal superintelligence to everyone.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/chatgpts-user-growth-has-slowed-report-finds/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">ChatGPT’s user growth has slowed, report finds</h2>
+            
+            <p class="article-content">ChatGPT's global monthly active users only grew by around 5% from August to November, while Gemini's users grew by about 30%.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/aws-reinvent-was-an-all-in-pitch-for-ai-customers-might-not-be-ready/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">AWS re:Invent was an all-in pitch for AI. Customers might not be ready.</h2>
+            
+            <p class="article-content">AWS is releasing a lot of new AI tech, but the cloud infrastructure giant's enterprise customers may not be ready for it yet.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">Technology</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/esim-adoption-is-on-the-rise-thanks-to-travel-and-device-compatibility/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">eSIM adoption is on the rise thanks to travel and device compatibility</h2>
+            
+            <p class="article-content">As a technology, eSIM has been around for a decade now. However, global eSIM adoption was around 3% last year and will only cross 5% this year. Despite these figures, analysts, eSIM-providing...</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/new-knoway-robotaxis-cause-chaos-in-upcoming-grand-theft-auto-online-dlc/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">New ‘KnoWay’ robotaxis cause chaos in upcoming Grand Theft Auto Online DLC</h2>
+            
+            <p class="article-content">The inclusion of the Waymo look-a-likes appears to be part of a larger storyline that will encourage players to "stop the development of a mass surveillance network."</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/new-streaming-channel-launches-to-give-viewers-a-peek-into-city-council-meetings/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">New streaming channel launches to give viewers a peek into city council meetings</h2>
+            
+            <p class="article-content">Hamlet TV is a way to help keep citizens informed of what's happening inside local governments.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://corrode.dev/blog/defensive-programming/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Patterns for Defensive Programming in Rust</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://blog.google/technology/developers/gemini-3-pro-vision/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Gemini 3 Pro: the frontier of vision AI</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/the-new-york-times-is-suing-perplexity-for-copyright-infringement/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">The New York Times is suing Perplexity for copyright infringement</h2>
+            
+            <p class="article-content">The New York Times filed a copyright lawsuit against Perplexity, joining other publishers using legal action as leverage to force AI companies into licensing deals that compensate content creators.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://blog.cloudflare.com/5-december-2025-outage/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Cloudflare outage on December 5, 2025</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/meta-signs-commercial-ai-data-agreements-with-publishers-to-offer-real-time-news-on-meta-ai/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Meta signs commercial AI data agreements with publishers to offer real-time news on Meta AI</h2>
+            
+            <p class="article-content">Meta is partnering with CNN, Fox News, Fox Sports, Le Monde Group, the People Inc. portfolio of media brands, The Daily Caller, The Washington Examiner, and USA Today.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/energy-storage-industry-set-aggressive-goals-for-2025-and-already-crushed-them/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Energy storage industry set aggressive goals for 2025 — and already crushed them</h2>
+            
+            <p class="article-content">The battery storage industry in the U.S. has grown in leaps and bounds in recent years, surpassing its most aggressive targets to become one of the largest new sources of power on the grid.</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://techcrunch.com/2025/12/05/in-its-first-dsa-penalty-eu-fines-x-e120m-for-deceptive-blue-check-verification-system/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">TechCrunch</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">In its first DSA penalty, EU fines X €120M for ‘deceptive’ blue check verification system</h2>
+            
+            <p class="article-content">The EC is taking issue with the fact that X, the social network formerly known as Twitter, has been allowing anyone to buy a "blue checkmark," the platform's long-standing symbol that a user has...</p>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://about.netflix.com/en/news/netflix-to-acquire-warner-bros" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Netflix to Acquire Warner Bros</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://netflixtechblog.com/av1-now-powering-30-of-netflix-streaming-02f592242d80" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 05, 2025</span>
+            </div>
+            <h2 class="article-title">Netflix’s AV1 Journey: From Android to TVs and Beyond</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">Entertainment</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://petapixel.com/2025/11/13/this-guy-built-a-compact-camera-using-an-optical-mouse/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 03, 2025</span>
+            </div>
+            <h2 class="article-title">A compact camera built using an optical mouse</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.fieldnotes.nautilus.quest/p/the-kids-who-ran-away-to-1960s-san" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 02, 2025</span>
+            </div>
+            <h2 class="article-title">Kids who ran away to 1960s San Francisco</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://alexwlchan.net/2025/detecting-av1-videos/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 02, 2025</span>
+            </div>
+            <h2 class="article-title">Detecting AV1-encoded videos with Python</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://www.ursulakleguin.com/blog/3-the-absent-silence" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 02, 2025</span>
+            </div>
+            <h2 class="article-title">The Absent Silence (2010)</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://docs.dawndrums.tn/blog/dd-rev1.1-arch/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Dec 01, 2025</span>
+            </div>
+            <h2 class="article-title">Divine D native Linux open-source mobile system – Rev. 1.1 Hardware Architecture</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://youtu.be/nKVq9u52A-c?si=KVY6AK7tsudqnbJN" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Nov 30, 2025</span>
+            </div>
+            <h2 class="article-title">Making tiny 0.1cc two stroke engine from scratch</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://github.com/Tongyi-MAI/Z-Image" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Nov 30, 2025</span>
+            </div>
+            <h2 class="article-title">Z-Image: Powerful and highly efficient image generation model with 6B parameters</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://michael.stapelberg.ch/posts/2025-11-29-self-hosting-photos-with-immich/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Nov 30, 2025</span>
+            </div>
+            <h2 class="article-title">Self-hosting my photos with Immich</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://maphappenings.com/2025/11/06/bee-maps/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Nov 30, 2025</span>
+            </div>
+            <h2 class="article-title">Mapping Amazing: Bee Maps</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://blog.chrislewis.au/the-unexpected-effectiveness-of-one-shot-decompilation-with-claude/" target="_blank" rel="noopener noreferrer">
+            <div class="article-meta">
+                <span class="article-source">Hacker News</span>
+                <span class="article-date">Nov 28, 2025</span>
+            </div>
+            <h2 class="article-title">The unexpected effectiveness of one-shot decompilation with Claude</h2>
+            
+            
+            <div class="article-topics">
+                
+                <span class="topic-tag">General</span>
+                
+            </div>
+            
+        </a>
+    </li>
+    
+</ul>
 
-        <div class="features">
-            <div class="feature done">Phase 1: Project Setup Complete</div>
-            <div class="feature">Phase 2: RSS Feed Processing (In Progress)</div>
-            <div class="feature">Phase 3: LLM Integration</div>
-            <div class="feature">Phase 4: Static Site Generation</div>
-            <div class="feature">Phase 5: Web UI</div>
-        </div>
 
-        <p><strong>This site will be updated automatically as we build the application.</strong></p>
 
-        <div class="links">
-            <a href="https://github.com/jamiefletchertv/feedrr" target="_blank">GitHub Repository</a>
-            <a href="https://github.com/jamiefletchertv/feedrr/blob/main/README.md" target="_blank">Documentation</a>
-        </div>
+    </main>
 
-        <div class="footer">
-            Last updated: <span id="date"></span>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('date').textContent = new Date().toLocaleString();
-    </script>
+    <footer>
+        <p>
+            Generated by <a href="https://github.com/jamiefletchertv/feedrr">feedrr</a> •
+            Last updated: 2025-12-06 18:21 UTC
+        </p>
+    </footer>
 </body>
 </html>

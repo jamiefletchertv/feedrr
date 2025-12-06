@@ -65,10 +65,32 @@ def fetch_feed(feed_url: str, timeout: int = 30) -> List[Dict[str, Any]]:
                 except:
                     pass
 
+            # Get image URL (try multiple fields)
+            image_url = None
+            if hasattr(entry, 'media_content') and entry.media_content:
+                # RSS media:content
+                image_url = entry.media_content[0].get('url')
+            elif hasattr(entry, 'media_thumbnail') and entry.media_thumbnail:
+                # RSS media:thumbnail
+                image_url = entry.media_thumbnail[0].get('url')
+            elif hasattr(entry, 'enclosures') and entry.enclosures:
+                # RSS enclosure (check if it's an image)
+                for enclosure in entry.enclosures:
+                    if enclosure.get('type', '').startswith('image/'):
+                        image_url = enclosure.get('href')
+                        break
+            elif hasattr(entry, 'links'):
+                # Check links for image
+                for link in entry.links:
+                    if link.get('type', '').startswith('image/'):
+                        image_url = link.get('href')
+                        break
+
             articles.append({
                 'url': url,
                 'title': title,
                 'content': content,
+                'image_url': image_url,
                 'published_date': published_date
             })
 

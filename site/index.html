@@ -9,13 +9,85 @@
 </head>
 <body>
     <header>
-        <h1>feedrr</h1>
-        <p>AI-powered news aggregator</p>
+        <div class="header-content">
+            <div class="header-text">
+                <h1>feedrr</h1>
+                <p>AI-powered news aggregator</p>
+            </div>
+            <button id="view-toggle" class="view-toggle" aria-label="Toggle view">
+                <svg class="icon-list" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                <svg class="icon-cards" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+            </button>
+        </div>
     </header>
 
     <main>
         
 <ul class="articles">
+    
+    <li class="article">
+        <a href="https://www.bbc.com/news/articles/cz680jx511no?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">BBC News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Zelensky signals progress in talks with US on peace plan</h2>
+                
+                <p class="article-content">The Ukrainian president says he is "determined" to continue working with US, as Russian strikes continue.</p>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/1230/live/b8babfd0-d2dc-11f0-a892-01d657345866.jpg" alt="Zelensky signals progress in talks with US on peace plan" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://arxiv.org/abs/2505.17272" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Zebra-Llama: Towards Efficient Hybrid Models</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Zebra-Llama: Towards Efficient Hybrid Models">
+                
+            </div>
+        </a>
+    </li>
     
     <li class="article">
         <a href="https://www.bbc.com/sport/football/articles/cpvd0ynlpdjo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
@@ -224,6 +296,31 @@
             <div class="article-image">
                 
                 <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/d45d/live/8014d960-d2bc-11f0-9a50-7beb4a0b24cf.jpg" alt="Deadly attack on kindergarten reported in Sudan" onerror="this.src='static/images/placeholder.svg'">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
+        <a href="https://github.com/Francium-Tech/scanify" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Show HN: I made a tool to make PDFs look scanned because bureaucracy</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Show HN: I made a tool to make PDFs look scanned because bureaucracy">
                 
             </div>
         </a>
@@ -440,6 +537,31 @@
     </li>
     
     <li class="article">
+        <a href="https://www.irishpoliticsnewsletter.ie/p/ireland-neutrality" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Dec 06, 2025</span>
+                </div>
+                <h2 class="article-title">Ireland's Inability to Defend Itself</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Ireland's Inability to Defend Itself">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
         <a href="https://www.bbc.com/news/articles/cvg87j86xg3o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
             <div class="article-info">
                 <div class="article-meta">
@@ -461,33 +583,6 @@
             <div class="article-image">
                 
                 <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/c04b/live/32df9620-d1cd-11f0-a892-01d657345866.png" alt="Young people are getting a 'raw deal', and that's good news for the Greens and Reform" onerror="this.src='static/images/placeholder.svg'">
-                
-            </div>
-        </a>
-    </li>
-    
-    <li class="article">
-        <a href="https://www.bbc.com/news/articles/clydxj7my84o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer">
-            <div class="article-info">
-                <div class="article-meta">
-                    <span class="article-source">BBC News</span>
-                    <span class="article-date">Dec 06, 2025</span>
-                </div>
-                <h2 class="article-title">Russia hits Ukraine as US reports progress in talks with Kyiv</h2>
-                
-                <p class="article-content">France's president condemns the attack and announces talks in London on Monday with Ukrainian, British and German leaders.</p>
-                
-                
-                <div class="article-topics">
-                    
-                    <span class="topic-tag">General</span>
-                    
-                </div>
-                
-            </div>
-            <div class="article-image">
-                
-                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/11fb/live/f776d7c0-d2c0-11f0-9a50-7beb4a0b24cf.jpg" alt="Russia hits Ukraine as US reports progress in talks with Kyiv" onerror="this.src='static/images/placeholder.svg'">
                 
             </div>
         </a>
@@ -541,7 +636,7 @@
             </div>
             <div class="article-image">
                 
-                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/4ede/live/44268440-d2d4-11f0-9fb5-5f3a3703a365.jpg" alt="Bethlehem Christmas tree lights up for first time since start of Gaza war" onerror="this.src='static/images/placeholder.svg'">
+                <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/04c2/live/083382f0-d2e6-11f0-a892-01d657345866.jpg" alt="Bethlehem Christmas tree lights up for first time since start of Gaza war" onerror="this.src='static/images/placeholder.svg'">
                 
             </div>
         </a>
@@ -2114,6 +2209,31 @@
     </li>
     
     <li class="article">
+        <a href="https://supernuclear.substack.com/p/traveling-neighborhoods" target="_blank" rel="noopener noreferrer">
+            <div class="article-info">
+                <div class="article-meta">
+                    <span class="article-source">Hacker News</span>
+                    <span class="article-date">Nov 30, 2025</span>
+                </div>
+                <h2 class="article-title">Traveling Neighborhoods</h2>
+                
+                
+                <div class="article-topics">
+                    
+                    <span class="topic-tag">General</span>
+                    
+                </div>
+                
+            </div>
+            <div class="article-image">
+                
+                <img src="static/images/placeholder.svg" alt="Traveling Neighborhoods">
+                
+            </div>
+        </a>
+    </li>
+    
+    <li class="article">
         <a href="https://github.com/Tongyi-MAI/Z-Image" target="_blank" rel="noopener noreferrer">
             <div class="article-info">
                 <div class="article-meta">
@@ -2276,8 +2396,10 @@
     <footer>
         <p>
             Generated by <a href="https://github.com/jamiefletchertv/feedrr">feedrr</a> •
-            Last updated: 2025-12-06 20:21 UTC
+            Last updated: 2025-12-06 21:16 UTC
         </p>
     </footer>
+
+    <script src="static/js/main.js"></script>
 </body>
 </html>

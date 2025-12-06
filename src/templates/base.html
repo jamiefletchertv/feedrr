@@ -9,8 +9,28 @@
 </head>
 <body>
     <header>
-        <h1>feedrr</h1>
-        <p>AI-powered news aggregator</p>
+        <div class="header-content">
+            <div class="header-text">
+                <h1>feedrr</h1>
+                <p>AI-powered news aggregator</p>
+            </div>
+            <button id="view-toggle" class="view-toggle" aria-label="Toggle view">
+                <svg class="icon-list" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                </svg>
+                <svg class="icon-cards" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="3" width="7" height="7"></rect>
+                    <rect x="14" y="14" width="7" height="7"></rect>
+                    <rect x="3" y="14" width="7" height="7"></rect>
+                </svg>
+            </button>
+        </div>
     </header>
 
     <main>
@@ -23,5 +43,7 @@
             Last updated: {{ last_updated }}
         </p>
     </footer>
+
+    <script src="static/js/main.js"></script>
 </body>
 </html>

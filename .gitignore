@@ -542,7 +542,7 @@ venv.bak/
 .ropeproject
 
 # mkdocs documentation
-/site
+# /site  ← Commented out so we can commit our generated site/
 
 # mypy
 .mypy_cache/
@@ -588,7 +588,7 @@ coverage.xml
 
 # Generated static site (GitHub Pages will serve this)
 # We commit site/ for GitHub Pages deployment
-# site/
+# Uncommented so we can commit the generated site
 
 # Temporary files
 *.tmp

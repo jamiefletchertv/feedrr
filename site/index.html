@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>feedrr - RSS Aggregator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+        .status {
+            display: inline-block;
+            background: #fbbf24;
+            color: #78350f;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .features {
+            margin: 30px 0;
+            text-align: left;
+        }
+        .feature {
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+        }
+        .feature::before {
+            content: "⏳";
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        .feature.done::before {
+            content: "✅";
+        }
+        .links {
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            margin: 0 10px;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>feedrr</h1>
+        <span class="status">🚧 Under Construction</span>
+
+        <p>RSS/News Aggregator with AI-powered topic tagging and content deduplication.</p>
+
+        <div class="features">
+            <div class="feature done">Phase 1: Project Setup Complete</div>
+            <div class="feature">Phase 2: RSS Feed Processing (In Progress)</div>
+            <div class="feature">Phase 3: LLM Integration</div>
+            <div class="feature">Phase 4: Static Site Generation</div>
+            <div class="feature">Phase 5: Web UI</div>
+        </div>
+
+        <p><strong>This site will be updated automatically as we build the application.</strong></p>
+
+        <div class="links">
+            <a href="https://github.com/jamiefletchertv/feedrr" target="_blank">GitHub Repository</a>
+            <a href="https://github.com/jamiefletchertv/feedrr/blob/main/README.md" target="_blank">Documentation</a>
+        </div>
+
+        <div class="footer">
+            Last updated: <span id="date"></span>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('date').textContent = new Date().toLocaleString();
+    </script>
+</body>
+</html>

@@ -1,15 +1,33 @@
 # feedrr
 
-RSS/News Aggregator with AI-powered topic tagging and content deduplication.
+AI-powered RSS news aggregator with smart deduplication and trending detection.
+
+Live site: **https://jamiefletcher.dev/feedrr**
 
 ## Features
 
-- **RSS Feed Aggregation** - Fetch and parse multiple RSS feeds
-- **AI-Powered Topic Tagging** - Automatic categorization using lightweight LLM
-- **Content Deduplication** - Identify duplicate articles across sources
-- **Static Site Generation** - Fast, mobile-friendly web interface
-- **GitHub Pages Deployment** - Automated hosting via GitHub Actions
-- **Clean UI** - Mobile/Web view inspired by iOS app "feeed"
+### 🤖 AI-Powered Intelligence
+- **Content Deduplication** - Automatically detects duplicate articles across sources using AI embeddings (85% similarity threshold)
+- **Trending Detection** - Identifies stories covered by multiple sources with visual badges
+- **Smart Topic Tagging** - Auto-categorizes articles using lightweight LLM (sentence-transformers)
+
+### 📰 RSS Aggregation
+- **Multi-Source Support** - Fetch from unlimited RSS/Atom feeds
+- **Image Extraction** - Pulls images from RSS media tags and HTML content
+- **Timezone Handling** - Properly parses dates across all timezones
+
+### 🎨 User Interface
+- **Two View Modes** - Toggle between compact list and rich card views
+- **Smart Filtering** - Filter by category and AI-detected topics
+- **Multi-Source Navigation** - Expandable source list for trending articles
+- **Mobile-First Design** - Responsive, iOS-inspired clean interface
+- **Dark/Light Themes** - (Coming soon)
+
+### ⚡ Performance & Deployment
+- **Static Site Generation** - Pre-rendered HTML for instant loading
+- **GitHub Pages Hosting** - Automated deployment and updates
+- **No Backend Required** - Pure static files, no server needed
+- **LocalStorage Preferences** - Remembers view mode and filters
 
 ## Quick Start
 
@@ -62,18 +80,19 @@ Open `site/index.html` in your browser to view the generated site.
 
 See [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) for detailed documentation.
 
-## Project Scope (MVP)
+## Technology Stack
 
-Priority features:
+- **Python 3.11+** - Modern Python with type hints
+- **sentence-transformers** - Lightweight AI model for embeddings (~80MB)
+- **SQLite** - Local database with full relationship support
+- **Jinja2** - Template engine for static site generation
+- **GitHub Actions** - Automated builds and deployments
 
-- ✅ Multiple RSS sources
-- ✅ Mobile/Web view similar to iOS app `feeed`
-- ✅ Python implementation
-- ✅ GitHub Pages hosting (static site generator)
-- ✅ Context/topic tagging (using lightweight LLM)
-- ✅ Content deduplication (using lightweight LLM)
-- ⏳ Bionic reader mode (post-MVP)
-- ✅ Local db/records with versioning
+## Documentation
+
+- **[CLAUDE.md](CLAUDE.md)** - Complete technical documentation and architecture
+- **[docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)** - Development setup and guidelines
+- **[tests/](tests/)** - Comprehensive test suite with 90+ tests
 
 ## Development
 

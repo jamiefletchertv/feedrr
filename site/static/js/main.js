@@ -78,3 +78,26 @@
     categoryFilter.addEventListener('change', applyFilters);
     topicFilter.addEventListener('change', applyFilters);
 })();
+
+// Expandable article content
+(function() {
+    // Only handle expandable articles
+    const expandableHeaders = document.querySelectorAll('.article-header.expandable');
+
+    expandableHeaders.forEach(header => {
+        header.addEventListener('click', function(e) {
+            const article = this.closest('.article');
+
+            // Toggle expanded state
+            article.classList.toggle('expanded');
+        });
+    });
+
+    // Prevent link button clicks from triggering article expansion
+    const linkButtons = document.querySelectorAll('.article-link-btn');
+    linkButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation();
+        });
+    });
+})();

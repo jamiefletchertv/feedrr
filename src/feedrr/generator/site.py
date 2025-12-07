@@ -49,18 +49,22 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
 
         # Clean content - remove if it's just "Comments" or HTML links
         clean_content = None
+        has_full_content = False
         if article.content:
             # Strip HTML tags
             text_content = re.sub(r'<[^>]+>', '', article.content).strip()
             # Only include if it's meaningful (not just "Comments")
             if text_content and text_content.lower() != 'comments' and len(text_content) > 20:
                 clean_content = text_content
+                # Consider it "full content" if it's longer than 300 characters
+                has_full_content = len(text_content) > 300
 
         articles.append({
             'id': article.id,
             'url': article.url,
             'title': article.title,
             'content': clean_content,
+            'has_full_content': has_full_content,
             'image_url': article.image_url,
             'published_date': published_str,
             'source_name': article.source.name,

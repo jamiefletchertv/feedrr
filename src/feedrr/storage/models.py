@@ -1,7 +1,7 @@
 """Simple database models for feedrr MVP."""
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey, create_engine
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean, ForeignKey, LargeBinary, create_engine
 from sqlalchemy.orm import relationship, declarative_base, Session
 
 Base = declarative_base()
@@ -42,9 +42,15 @@ class Article(Base):
     fetched_date = Column(DateTime, default=datetime.utcnow)
     source_id = Column(Integer, ForeignKey("sources.id"), nullable=False)
 
+    # Deduplication fields
+    embedding = Column(LargeBinary)  # Serialized numpy array
+    is_duplicate = Column(Boolean, default=False)
+    duplicate_of_id = Column(Integer, ForeignKey("articles.id"), nullable=True)
+
     # Relationships
     source = relationship("Source", back_populates="articles")
     topics = relationship("ArticleTopic", back_populates="article")
+    duplicate_of = relationship("Article", remote_side=[id], backref="duplicates")
 
     def __repr__(self) -> str:
         return f"<Article(title='{self.title[:50]}...')>"

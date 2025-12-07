@@ -16,19 +16,24 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
     """
     Get articles with their topics and source information.
 
-    Only returns articles from enabled sources.
+    Only returns non-duplicate articles from enabled sources.
+    Includes duplicate count for articles that have duplicates.
 
     Returns list of article dictionaries with:
     - id, url, title, content
     - published_date (formatted string)
     - source_name
     - topics (list of topic names)
+    - duplicate_count (number of duplicates)
+    - duplicate_sources (list of source names for duplicates)
     """
     articles = []
 
-    # Query articles with sources, filtered by enabled sources, ordered by published date (most recent first)
+    # Query articles with sources, filtered by enabled sources and non-duplicates
+    # Ordered by published date (most recent first)
     query = session.query(Article).join(Source).filter(
-        Source.enabled == True
+        Source.enabled == True,
+        Article.is_duplicate == False
     ).order_by(
         Article.published_date.desc().nullslast(),
         Article.fetched_date.desc()
@@ -59,6 +64,17 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
                 # Consider it "full content" if it's longer than 300 characters
                 has_full_content = len(text_content) > 300
 
+        # Get duplicate information
+        duplicate_count = len(article.duplicates) if hasattr(article, 'duplicates') else 0
+        duplicate_sources = []
+        if duplicate_count > 0:
+            for dup in article.duplicates:
+                if dup.source:
+                    duplicate_sources.append({
+                        'name': dup.source.name,
+                        'url': dup.url
+                    })
+
         articles.append({
             'id': article.id,
             'url': article.url,
@@ -69,7 +85,9 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
             'published_date': published_str,
             'source_name': article.source.name,
             'source_category': article.source.category,
-            'topics': sorted(topic_names)  # Sort for consistent display
+            'topics': sorted(topic_names),  # Sort for consistent display
+            'duplicate_count': duplicate_count,
+            'duplicate_sources': duplicate_sources
         })
 
     return articles

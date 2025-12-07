@@ -81,3 +81,29 @@
 
 // Article expansion is now controlled by view mode, not individual clicks
 // No manual expansion functionality needed
+
+// Source list expansion for duplicate articles
+(function() {
+    const sourceButtons = document.querySelectorAll('.source-tag-expandable');
+
+    sourceButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const articleId = this.getAttribute('data-article-id');
+            const sourcesDiv = document.getElementById(`sources-${articleId}`);
+
+            if (sourcesDiv) {
+                // Toggle visibility
+                if (sourcesDiv.style.display === 'none') {
+                    sourcesDiv.style.display = 'block';
+                    this.classList.add('expanded');
+                } else {
+                    sourcesDiv.style.display = 'none';
+                    this.classList.remove('expanded');
+                }
+            }
+        });
+    });
+})();

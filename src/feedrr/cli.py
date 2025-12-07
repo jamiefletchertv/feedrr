@@ -7,7 +7,7 @@ from rich.console import Console
 from rich.table import Table
 
 from feedrr.config import get_config_path, get_feeds_path, get_data_dir
-from feedrr.storage.models import create_database, get_session
+from feedrr.storage.models import create_database, get_session, Article
 from feedrr.storage.db import (
     load_sources_from_config,
     get_enabled_sources,
@@ -118,9 +118,18 @@ def fetch(fetch_all: bool) -> None:
 
 @main.command()
 @click.option("--limit", type=int, help="Limit number of articles to process")
-def process(limit: int | None) -> None:
-    """Process articles with topic tagging."""
+@click.option("--skip-dedup", is_flag=True, help="Skip deduplication")
+def process(limit: int | None, skip_dedup: bool) -> None:
+    """Process articles with topic tagging and deduplication."""
     try:
+        from feedrr.processor.dedup import (
+            generate_article_embedding,
+            find_duplicate,
+            mark_as_duplicate,
+            serialize_embedding,
+        )
+        from feedrr.processor.topics import get_model
+
         # Get database path
         db_path = get_data_dir() / "feedrr.db"
         if not db_path.exists():
@@ -150,7 +159,12 @@ def process(limit: int | None) -> None:
 
         console.print(f"[cyan]Processing {len(articles)} articles...[/cyan]\n")
 
+        # Load model once for both tagging and deduplication
+        model = get_model()
+
         processed_count = 0
+        duplicate_count = 0
+
         for article in articles:
             # Combine title and content for topic assignment
             article_text = f"{article.title} {article.content or ''}"
@@ -162,13 +176,38 @@ def process(limit: int | None) -> None:
             for slug in topic_slugs:
                 assign_topic_to_article(session, article, slug)
 
+            # Deduplication
+            if not skip_dedup and not article.is_duplicate:
+                # Generate and store embedding
+                embedding = generate_article_embedding(model, article)
+                article.embedding = serialize_embedding(embedding)
+
+                # Check for duplicates against existing articles with embeddings
+                existing_articles = session.query(Article).filter(
+                    Article.id != article.id,
+                    Article.embedding.isnot(None),
+                    Article.is_duplicate == False
+                ).all()
+
+                duplicate_of = find_duplicate(model, article, existing_articles)
+
+                if duplicate_of:
+                    mark_as_duplicate(article, duplicate_of)
+                    duplicate_count += 1
+
+                session.commit()
+
             processed_count += 1
 
             if processed_count % 10 == 0:
                 console.print(f"  Processed {processed_count}/{len(articles)} articles...")
 
         session.close()
-        console.print(f"\n[bold green]✓ Processing complete![/bold green] Tagged {processed_count} articles")
+
+        console.print(f"\n[bold green]✓ Processing complete![/bold green]")
+        console.print(f"  Tagged {processed_count} articles")
+        if not skip_dedup:
+            console.print(f"  Found {duplicate_count} duplicates")
 
     except Exception as e:
         console.print(f"[red]Error:[/red] {e}")

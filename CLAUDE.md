@@ -283,19 +283,19 @@ feedrr/
 - ✅ Add logging and monitoring
 - ✅ Comprehensive test suite for fetcher
 
-### Phase 3: LLM Integration ✅ PARTIALLY COMPLETED
+### Phase 3: LLM Integration ✅ COMPLETED
 
-**Completed:**
-- ✅ Download and load sentence-transformers model
-- ✅ Implement topic assignment
+**Tasks Completed:**
+- ✅ Download and load sentence-transformers model (all-MiniLM-L6-v2)
+- ✅ Implement topic assignment using embeddings
 - ✅ Store topic associations in database
-- ✅ CLI tool: `feedrr process`
-
-**Remaining:**
-- [ ] Content deduplication using embeddings
-- [ ] Duplicate marking in database
-- [ ] Article stacking UI
-- [ ] Trending topics detection
+- ✅ Content deduplication using cosine similarity (0.85 threshold)
+- ✅ Duplicate tracking in database (embedding storage, is_duplicate flag)
+- ✅ Article stacking - filter duplicates from UI
+- ✅ Trending detection - badge for multi-source articles
+- ✅ Expandable source list UI with individual links
+- ✅ CLI tool: `feedrr process` with `--skip-dedup` option
+- ✅ Comprehensive test suite for deduplication (17 tests)
 
 ### Phase 4: Static Site Generation ✅ COMPLETED
 
@@ -499,41 +499,45 @@ except IntegrityError:
 
 ## Recent Updates
 
-### Latest Changes (2025-12-07)
+### Phase 3 Release (2025-12-07)
 
-1. **Two-View Toggle Simplification**
-   - Removed redundant list-expanded view
-   - Simplified to list and card views only
-   - Updated toggle icons and JavaScript
+1. **Content Deduplication** ⭐ NEW
+   - Automatic duplicate detection using AI embeddings
+   - 85% similarity threshold for duplicate matching
+   - Duplicate articles filtered from main feed
+   - Comprehensive test suite with 17 tests
 
-2. **Compact Source Button**
-   - Moved from bottom of article to inline with topic tags
-   - Changed text from "View source" to "Source"
-   - Blue outline button style
-   - Hover effect with blue fill
+2. **Trending Detection** ⭐ NEW
+   - Orange "Trending" badge for multi-source articles
+   - Shows number of sources covering the story
+   - Hover tooltip with source names
 
-3. **Card View Fixes**
-   - Fixed CSS to properly position elements
-   - Image at top with overlaid meta info
-   - Clean spacing between title and topics
-   - Full content display (when available)
+3. **Multi-Source Navigation** ⭐ NEW
+   - Expandable "Sources" button for duplicated articles
+   - Click to reveal all sources covering the story
+   - Individual clickable links for each source
+   - Smooth expand/collapse animation
 
-4. **Filter UI Improvements**
-   - Dropdown-based filtering instead of buttons
-   - Two-level filtering: Categories and Topics
-   - Mobile-friendly responsive design
-   - Filter status message with active filters
+4. **Two-View Toggle**
+   - List view: compact with image on right
+   - Card view: full-width image at top
+   - LocalStorage preference saving
 
-5. **Image Extraction**
-   - Extract images from standard RSS fields (media:content)
+5. **UI Enhancements**
+   - Compact source button inline with topic tags
+   - Dropdown-based category and topic filtering
+   - Mobile-responsive design
+   - Clean card view layout
+
+6. **Image Extraction**
+   - Extract from RSS media:content
    - Fallback to HTML content parsing
-   - Support for content:encoded (WordPress feeds)
-   - Priority order for multiple image sources
+   - WordPress content:encoded support
 
-6. **GitHub Pages Deployment**
-   - Fixed merge conflicts in site/index.html
-   - Recreated database with updated schema
-   - Clean deployment to jamiefletcher.dev/feedrr
+7. **Database Updates**
+   - Added embedding storage (LargeBinary)
+   - is_duplicate and duplicate_of_id fields
+   - Self-referential relationship for duplicates
 
 ---
 
@@ -541,15 +545,16 @@ except IntegrityError:
 
 - ✅ Successfully fetch and parse RSS feeds from multiple sources
 - ✅ Accurate topic tagging on articles
+- ✅ Content deduplication (>85% similarity threshold)
 - ✅ Clean, mobile-friendly UI
 - ✅ Automated deployment to GitHub Pages
 - ✅ Category and topic filtering
 - ✅ Two responsive view modes
-- ⏳ Content deduplication (planned)
-- ⏳ Article stacking (planned)
-- ⏳ Trending detection (planned)
+- ✅ Article stacking (duplicates filtered from feed)
+- ✅ Trending detection (multi-source article badges)
+- ✅ Comprehensive test coverage for core features
 
 ---
 
 *Last Updated: 2025-12-07*
-*Status: MVP Complete - Post-MVP Features In Planning*
+*Status: MVP Complete with Phase 3 Enhancements - All Core Features Implemented*

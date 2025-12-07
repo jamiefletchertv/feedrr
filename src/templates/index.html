@@ -49,6 +49,21 @@
                         <span class="topic-tag">{{ topic }}</span>
                         {% endfor %}
                         {% endif %}
+                        {% if article.duplicate_count > 0 %}
+                        <span class="trending-tag" title="Also covered by: {{ article.duplicate_sources|join(', ') }}">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                            Trending ({{ article.duplicate_count + 1 }} sources)
+                        </span>
+                        <button class="source-tag source-tag-expandable" data-article-id="{{ article.id }}">
+                            Sources ({{ article.duplicate_count + 1 }})
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
+                        {% else %}
                         <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="source-tag">
                             Source
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -57,6 +72,7 @@
                                 <line x1="10" y1="14" x2="21" y2="3"></line>
                             </svg>
                         </a>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="article-image">
@@ -73,6 +89,32 @@
             <div class="article-content-wrapper">
                 <div class="article-content">
                     <p class="content-text">{{ article.content | striptags }}</p>
+                </div>
+            </div>
+            {% endif %}
+
+            {# Show other sources covering this story - expandable #}
+            {% if article.duplicate_count > 0 %}
+            <div class="duplicate-sources" id="sources-{{ article.id }}" style="display: none;">
+                <div class="duplicate-sources-list">
+                    <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="duplicate-source-link">
+                        <span class="duplicate-source-name">{{ article.source_name }}</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    {% for source in article.duplicate_sources %}
+                    <a href="{{ source.url }}" target="_blank" rel="noopener noreferrer" class="duplicate-source-link">
+                        <span class="duplicate-source-name">{{ source.name }}</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
             {% endif %}

@@ -233,6 +233,19 @@
 - [ ] Add rollback functionality
 - [ ] Create version history UI
 
+### Deduplication Enhancements
+- [ ] Article stacking view for duplicates
+  - Group duplicate/similar articles together
+  - Show all sources covering the same story
+  - Expandable stack to view alternative perspectives
+  - Display canonical article with "X other sources" indicator
+- [ ] Trending topics detection
+  - Flag topics covered by multiple sources as "trending"
+  - Calculate trending score based on number of duplicate sources
+  - Highlight trending articles in UI with badge/indicator
+  - Sort option to show trending articles first
+  - Time-based trending (last 24h, 48h, week)
+
 ### Additional Features
 - [ ] Search functionality
 - [ ] Article bookmarking
@@ -241,6 +254,10 @@
 - [ ] Social sharing buttons
 - [ ] Reading time estimates
 - [ ] Article recommendations
+- [ ] Web scraping for article images (for feeds that don't include images in RSS)
+  - Fetch article page when RSS feed lacks images
+  - Extract image from og:image meta tags or article content
+  - Cache to avoid repeated fetches
 
 ---
 

@@ -2,7 +2,8 @@
 
 import feedparser
 import requests
-from datetime import datetime
+import re
+from datetime import datetime, timezone, timedelta
 from typing import List, Dict, Any, Optional
 from dateutil import parser as date_parser
 
@@ -23,6 +24,18 @@ def fetch_feed(feed_url: str, timeout: int = 30) -> List[Dict[str, Any]]:
     - Parse errors are caught and logged
     - Returns empty list on any error to allow other feeds to continue processing
     """
+    # Define common timezone abbreviations to avoid warnings
+    tzinfos = {
+        'EST': -18000,  # UTC-5
+        'EDT': -14400,  # UTC-4
+        'CST': -21600,  # UTC-6
+        'CDT': -18000,  # UTC-5
+        'MST': -25200,  # UTC-7
+        'MDT': -21600,  # UTC-6
+        'PST': -28800,  # UTC-8
+        'PDT': -25200,  # UTC-7
+    }
+
     articles = []
 
     try:
@@ -56,12 +69,12 @@ def fetch_feed(feed_url: str, timeout: int = 30) -> List[Dict[str, Any]]:
             published_date = None
             if hasattr(entry, 'published'):
                 try:
-                    published_date = date_parser.parse(entry.published)
+                    published_date = date_parser.parse(entry.published, tzinfos=tzinfos)
                 except:
                     pass
             elif hasattr(entry, 'updated'):
                 try:
-                    published_date = date_parser.parse(entry.updated)
+                    published_date = date_parser.parse(entry.updated, tzinfos=tzinfos)
                 except:
                     pass
 
@@ -85,6 +98,13 @@ def fetch_feed(feed_url: str, timeout: int = 30) -> List[Dict[str, Any]]:
                     if link.get('type', '').startswith('image/'):
                         image_url = link.get('href')
                         break
+
+            # If no image found in standard fields, try extracting from HTML content
+            if not image_url and content:
+                # Look for img tags in the content HTML
+                img_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', content)
+                if img_match:
+                    image_url = img_match.group(1)
 
             articles.append({
                 'url': url,

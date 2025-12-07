@@ -16,6 +16,8 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
     """
     Get articles with their topics and source information.
 
+    Only returns articles from enabled sources.
+
     Returns list of article dictionaries with:
     - id, url, title, content
     - published_date (formatted string)
@@ -24,8 +26,10 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
     """
     articles = []
 
-    # Query articles with sources, ordered by published date (most recent first)
-    query = session.query(Article).join(Source).order_by(
+    # Query articles with sources, filtered by enabled sources, ordered by published date (most recent first)
+    query = session.query(Article).join(Source).filter(
+        Source.enabled == True
+    ).order_by(
         Article.published_date.desc().nullslast(),
         Article.fetched_date.desc()
     ).limit(limit)

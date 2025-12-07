@@ -1,35 +1,94 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Filter Section -->
+<div class="filters">
+    <div class="filter-row">
+        <div class="filter-group">
+            <label for="category-filter">Category</label>
+            <select id="category-filter" class="filter-select">
+                <option value="all">All Categories</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category|title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="topic-filter">Topic</label>
+            <select id="topic-filter" class="filter-select">
+                <option value="all">All Topics</option>
+                {% for topic in topics %}
+                <option value="{{ topic }}">{{ topic }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="filter-status"></div>
+</div>
+
 <ul class="articles">
     {% for article in articles %}
-    <li class="article">
-        <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">
-            <div class="article-info">
-                <div class="article-meta">
-                    <span class="article-source">{{ article.source_name }}</span>
-                    <span class="article-date">{{ article.published_date }}</span>
+    <li class="article {% if not article.has_full_content %}article-no-expand{% endif %}" data-category="{{ article.source_category or 'none' }}" data-topics="{{ article.topics|join(',') }}">
+        <div class="article-container">
+            <div class="article-header {% if article.has_full_content %}expandable{% endif %}">
+                <div class="article-info">
+                    <h2 class="article-title">{{ article.title }}</h2>
+                    <div class="article-meta">
+                        <span class="article-source">{{ article.source_name }}</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">{{ article.published_date }}</span>
+                    </div>
+                    {% if article.content %}
+                    <p class="article-preview">{{ article.content | striptags | truncate(200) }}</p>
+                    {% endif %}
+                    {% if article.topics %}
+                    <div class="article-topics">
+                        {% for topic in article.topics %}
+                        <span class="topic-tag">{{ topic }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
-                <h2 class="article-title">{{ article.title }}</h2>
-                {% if article.content %}
-                <p class="article-content">{{ article.content | striptags | truncate(200) }}</p>
-                {% endif %}
-                {% if article.topics %}
-                <div class="article-topics">
-                    {% for topic in article.topics %}
-                    <span class="topic-tag">{{ topic }}</span>
-                    {% endfor %}
+                <div class="article-image">
+                    {% if article.image_url %}
+                    <img src="{{ article.image_url }}" alt="{{ article.title }}" onerror="this.src='static/images/placeholder.svg'">
+                    {% else %}
+                    <img src="static/images/placeholder.svg" alt="{{ article.title }}">
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
-            <div class="article-image">
-                {% if article.image_url %}
-                <img src="{{ article.image_url }}" alt="{{ article.title }}" onerror="this.src='static/images/placeholder.svg'">
-                {% else %}
-                <img src="static/images/placeholder.svg" alt="{{ article.title }}">
-                {% endif %}
+
+            {% if article.has_full_content %}
+            {# Articles with full content - show expandable section #}
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">{{ article.content | striptags }}</p>
+                </div>
+                <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="article-link-btn">
+                    <span>View source</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
             </div>
-        </a>
+            {% else %}
+            {# Articles without full content - show direct link button #}
+            <div class="article-action">
+                <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="article-link-btn">
+                    <span>View source</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                </a>
+            </div>
+            {% endif %}
+        </div>
     </li>
     {% endfor %}
 </ul>

@@ -16,6 +16,8 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
     """
     Get articles with their topics and source information.
 
+    Only returns articles from enabled sources.
+
     Returns list of article dictionaries with:
     - id, url, title, content
     - published_date (formatted string)
@@ -24,8 +26,10 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
     """
     articles = []
 
-    # Query articles with sources, ordered by published date (most recent first)
-    query = session.query(Article).join(Source).order_by(
+    # Query articles with sources, filtered by enabled sources, ordered by published date (most recent first)
+    query = session.query(Article).join(Source).filter(
+        Source.enabled == True
+    ).order_by(
         Article.published_date.desc().nullslast(),
         Article.fetched_date.desc()
     ).limit(limit)
@@ -45,21 +49,26 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
 
         # Clean content - remove if it's just "Comments" or HTML links
         clean_content = None
+        has_full_content = False
         if article.content:
             # Strip HTML tags
             text_content = re.sub(r'<[^>]+>', '', article.content).strip()
             # Only include if it's meaningful (not just "Comments")
             if text_content and text_content.lower() != 'comments' and len(text_content) > 20:
                 clean_content = text_content
+                # Consider it "full content" if it's longer than 300 characters
+                has_full_content = len(text_content) > 300
 
         articles.append({
             'id': article.id,
             'url': article.url,
             'title': article.title,
             'content': clean_content,
+            'has_full_content': has_full_content,
             'image_url': article.image_url,
             'published_date': published_str,
             'source_name': article.source.name,
+            'source_category': article.source.category,
             'topics': sorted(topic_names)  # Sort for consistent display
         })
 
@@ -85,10 +94,20 @@ def generate_site(session: Session, output_dir: Path, max_articles: int = 100) -
     # Get articles with topics
     articles = get_articles_with_topics(session, limit=max_articles)
 
+    # Collect unique categories and topics for filters
+    categories = set()
+    all_topics = set()
+    for article in articles:
+        if article.get('source_category'):
+            categories.add(article['source_category'])
+        all_topics.update(article.get('topics', []))
+
     # Render index page
     template = env.get_template('index.html')
     html = template.render(
         articles=articles,
+        categories=sorted(categories),
+        topics=sorted(all_topics),
         last_updated=datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
     )
 

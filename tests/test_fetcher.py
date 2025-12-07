@@ -121,3 +121,126 @@ def test_fetch_feed_untitled():
 
     assert len(articles) == 1
     assert articles[0]['title'] == "Untitled"
+
+
+def test_fetch_feed_image_from_media_content():
+    """Test extracting image from media:content RSS tag."""
+    mock_response = Mock()
+    mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+        <channel>
+            <item>
+                <title>Article with Media Content</title>
+                <link>https://example.com/article</link>
+                <media:content url="https://example.com/image.jpg" type="image/jpeg" />
+            </item>
+        </channel>
+    </rss>""".encode('utf-8')
+    mock_response.raise_for_status = Mock()
+
+    with patch('feedrr.fetcher.rss.requests.get', return_value=mock_response):
+        articles = fetch_feed("https://example.com/feed.xml")
+
+    assert len(articles) == 1
+    assert articles[0]['image_url'] == "https://example.com/image.jpg"
+
+
+def test_fetch_feed_image_from_html_content():
+    """Test extracting image from HTML content when no standard RSS image fields exist."""
+    mock_response = Mock()
+    mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0">
+        <channel>
+            <item>
+                <title>Article with Image in Content</title>
+                <link>https://example.com/article</link>
+                <description><![CDATA[
+                    <p><img src="https://example.com/article-image.jpg" alt="Article image" /></p>
+                    <p>This is the article content with an embedded image.</p>
+                ]]></description>
+            </item>
+        </channel>
+    </rss>""".encode('utf-8')
+    mock_response.raise_for_status = Mock()
+
+    with patch('feedrr.fetcher.rss.requests.get', return_value=mock_response):
+        articles = fetch_feed("https://example.com/feed.xml")
+
+    assert len(articles) == 1
+    assert articles[0]['image_url'] == "https://example.com/article-image.jpg"
+    assert articles[0]['content'] is not None
+
+
+def test_fetch_feed_image_from_content_field():
+    """Test extracting image from content:encoded field (common in WordPress feeds)."""
+    mock_response = Mock()
+    mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+        <channel>
+            <item>
+                <title>WordPress Article</title>
+                <link>https://example.com/article</link>
+                <content:encoded><![CDATA[
+                    <a href="https://example.com/full-image.jpg">
+                        <img class="alignleft" src="https://example.com/thumb-image.jpg" width="248" height="225" />
+                    </a>
+                    <p>Article content here...</p>
+                ]]></content:encoded>
+            </item>
+        </channel>
+    </rss>""".encode('utf-8')
+    mock_response.raise_for_status = Mock()
+
+    with patch('feedrr.fetcher.rss.requests.get', return_value=mock_response):
+        articles = fetch_feed("https://example.com/feed.xml")
+
+    assert len(articles) == 1
+    assert articles[0]['image_url'] == "https://example.com/thumb-image.jpg"
+
+
+def test_fetch_feed_no_image():
+    """Test article without any image sources returns None for image_url."""
+    mock_response = Mock()
+    mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0">
+        <channel>
+            <item>
+                <title>Article Without Image</title>
+                <link>https://example.com/article</link>
+                <description>Plain text description with no images</description>
+            </item>
+        </channel>
+    </rss>""".encode('utf-8')
+    mock_response.raise_for_status = Mock()
+
+    with patch('feedrr.fetcher.rss.requests.get', return_value=mock_response):
+        articles = fetch_feed("https://example.com/feed.xml")
+
+    assert len(articles) == 1
+    assert articles[0]['image_url'] is None
+
+
+def test_fetch_feed_image_priority():
+    """Test that media:content takes priority over HTML content images."""
+    mock_response = Mock()
+    mock_response.content = """<?xml version="1.0" encoding="UTF-8"?>
+    <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+        <channel>
+            <item>
+                <title>Article with Multiple Image Sources</title>
+                <link>https://example.com/article</link>
+                <media:content url="https://example.com/priority-image.jpg" type="image/jpeg" />
+                <description><![CDATA[
+                    <img src="https://example.com/html-image.jpg" alt="HTML image" />
+                ]]></description>
+            </item>
+        </channel>
+    </rss>""".encode('utf-8')
+    mock_response.raise_for_status = Mock()
+
+    with patch('feedrr.fetcher.rss.requests.get', return_value=mock_response):
+        articles = fetch_feed("https://example.com/feed.xml")
+
+    assert len(articles) == 1
+    # Should use media:content image, not HTML content image
+    assert articles[0]['image_url'] == "https://example.com/priority-image.jpg"

@@ -112,12 +112,18 @@ def generate_site(session: Session, output_dir: Path, max_articles: int = 100) -
     # Get articles with topics
     articles = get_articles_with_topics(session, limit=max_articles)
 
-    # Collect unique categories and topics for filters
+    # Collect all categories from enabled sources (not just displayed articles)
     categories = set()
+    category_query = session.query(Source.category).filter(
+        Source.enabled == True,
+        Source.category.isnot(None)
+    ).distinct()
+    for (category,) in category_query:
+        categories.add(category)
+
+    # Collect unique topics from displayed articles
     all_topics = set()
     for article in articles:
-        if article.get('source_category'):
-            categories.add(article['source_category'])
         all_topics.update(article.get('topics', []))
 
     # Render index page

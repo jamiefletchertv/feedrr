@@ -46,7 +46,7 @@ fetcher:
 generator:
   output_dir: "site"
   articles_per_page: 20
-  recent_articles_count: 50
+  recent_articles_count: 500
   static_dirs: ["static"]
   max_summary_length: 300
 

@@ -39,8 +39,11 @@ def fetch_feed(feed_url: str, timeout: int = 30) -> List[Dict[str, Any]]:
     articles = []
 
     try:
-        # Fetch the feed
-        response = requests.get(feed_url, timeout=timeout)
+        # Fetch the feed with user-agent header to avoid 403 errors
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (compatible; feedrr/1.0; +https://github.com/jamiefletchertv/feedrr)'
+        }
+        response = requests.get(feed_url, headers=headers, timeout=timeout, verify=True)
         response.raise_for_status()
 
         # Parse with feedparser

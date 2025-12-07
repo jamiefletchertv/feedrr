@@ -5,45 +5,148 @@
 # The fetcher handles these gracefully - failed feeds are logged but don't stop processing.
 # Articles from failed feeds are skipped and the build continues with successful sources.
 
+## World News
 sources:
-  - name: "Hacker News"
-    feed_url: "https://news.ycombinator.com/rss"
-    website_url: "https://news.ycombinator.com"
-    enabled: false
-    category: "tech"
+  - name: "BBC News"
+    feed_url: "http://feeds.bbci.co.uk/news/rss.xml"
+    website_url: "https://www.bbc.com/news"
+    enabled: true
+    category: "World"
+
+  - name: "Guardian"
+    feed_url: "https://www.theguardian.com/uk/rss"
+    website_url: "https://theguardian.com"
+    enabled: true
+    category: "World"
+  
+  - name: "Sky News"
+    feed_url: "https://feeds.skynews.com/feeds/rss/home.xml"
+    website_url: "https://news.sky.com"
+    enabled: true
+    category: "World"
+
+
 
   ## General Tech
   - name: "TechCrunch"
     feed_url: "https://techcrunch.com/feed/"
     website_url: "https://techcrunch.com"
-    enabled: false
-    category: "tech"
+    enabled: true
+    category: "General"
+
+  - name: "Gizmodo"
+    feed_url: "https://gizmodo.com/feed"
+    website_url: "https://gizmodo.com"
+    enabled: true
+    category: "General"
+
+  - name: "Hacker News"
+    feed_url: "https://news.ycombinator.com/rss"
+    website_url: "https://news.ycombinator.com"
+    enabled: true
+    category: "General"
 
   - name: "The Verge"
     feed_url: "https://www.theverge.com/rss/index.xml"
     website_url: "https://www.theverge.com"
     enabled: false  # Note: This feed is rate-limited and may return 420 errors
-    category: "tech"
-
-  ## Politics / News
-  - name: "BBC News"
-    feed_url: "http://feeds.bbci.co.uk/news/rss.xml"
-    website_url: "https://www.bbc.com/news"
-    enabled: false
-    category: "news"
+    category: "General"
+  
 
   ## OTT News
   - name: "Broadband TV News"
     feed_url: "http://feeds.feedburner.com/broadbandtvnews"
     website_url: "http://feeds.feedburner.com/broadbandtvnews"
     enabled: true
-    category: "ott news"
+    category: "OTT"
 
   - name: "Streaming Media"
     feed_url: "http://www.streamingmedia.com/RSS/RSS.articles.0.15.xml"
     website_url: "http://www.streamingmedia.com"
     enabled: true
-    category: "ott news"
+    category: "OTT"
+
+  - name: "Jan Ozer"
+    feed_url: "https://streaminglearningcenter.com/feed"
+    website_url: "https://streaminglearningcenter.com/feed"
+    enabled: true
+    category: "OTT"
+    
+  - name: "Dan Rayburn"
+    feed_url: "https://www.streamingmediablog.com/feed"
+    website_url: "https://www.streamingmediablog.com/"
+    enabled: true
+    category: "OTT"
+
+  - name: "Evan Shapiro"
+    feed_url: "https://eshap.substack.com/feed"
+    website_url: "https://eshap.substack.com"
+    enabled: true
+    category: "OTT"
+
+  - name: "Marion Ranchet"
+    feed_url: "https://www.streamingmadeeasy.com/feed"
+    website_url: "https://www.streamingmadeeasy.com/"
+    enabled: true
+    category: "OTT"
+
+  ## Media News
+  - name: "TVBEurope"
+    feed_url: "http://www.tvbeurope.com/feedCan"
+    website_url: "http://www.tvbeurope.com"
+    enabled: false  # Note: Returns 403 Forbidden errors
+    category: "Media"
+
+  - name: "TVTechnology"
+    feed_url: "http://www.tvtechnology.com/rss"
+    website_url: "http://www.tvtechnology.com/"
+    enabled: true
+    category: "Media"
+
+  ## Blogs
+  - name: "Netflix"
+    feed_url: "https://netflixtechblog.com/feed"
+    website_url: "https://netflixtechblog.com/"
+    enabled: false  # Note: SSL certificate verification error
+    category: "Blogs"
+
+  - name: "Bitmovin"
+    feed_url: "https://bitmovin.com/feed"
+    website_url: "https://bitmovin.com/"
+    enabled: false  # Note: Returns 403 Forbidden errors
+    category: "Blogs"
+
+  - name: "Ateme"
+    feed_url: "http://www.ateme.com/blog/feed/"
+    website_url: "http://www.ateme.com/blog/"
+    enabled: true
+    category: "Blogs"
+
+  - name: "Mux"
+    feed_url: "https://www.mux.com/blog/rss.xml"
+    website_url: "https://www.mux.com/"
+    enabled: false  # Note: Rate limited (429 errors)
+    category: "Blogs"
+
+  - name: "AWS M&E"
+    feed_url: "https://aws.amazon.com/blogs/media/feed"
+    website_url: "https://aws.amazon.com/blogs/media/"
+    enabled: true
+    category: "Blogs"
+
+  - name: "Synamedia"
+    feed_url: "https://www.synamedia.com/resources/blog/feed"
+    website_url: "https://www.synamedia.com/resources/blog"
+    enabled: false  # Note: Returns 403 Forbidden errors
+    category: "Blogs"
+
+  - name: "Broadpeak"
+    feed_url: "https://broadpeak.tv/blog/feed"
+    website_url: "https://broadpeak.tv/blog/"
+    enabled: false  # Note: Returns 403 Forbidden errors
+    category: "Blogs"
+
+
 
   # Example: Add more feeds as needed
   # - name: "Example Feed"

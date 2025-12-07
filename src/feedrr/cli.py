@@ -216,7 +216,7 @@ def process(limit: int | None, skip_dedup: bool) -> None:
 
 
 @main.command()
-@click.option("--max-articles", type=int, default=100, help="Maximum number of articles to include")
+@click.option("--max-articles", type=int, default=500, help="Maximum number of articles to include")
 @click.option("--output", type=click.Path(), help="Output directory (default: site/)")
 def generate(max_articles: int, output: str | None) -> None:
     """Generate static site."""

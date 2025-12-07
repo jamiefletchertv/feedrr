@@ -64,6 +64,7 @@ def get_articles_with_topics(session: Session, limit: int = 100) -> List[Dict[st
             'image_url': article.image_url,
             'published_date': published_str,
             'source_name': article.source.name,
+            'source_category': article.source.category,
             'topics': sorted(topic_names)  # Sort for consistent display
         })
 
@@ -89,10 +90,20 @@ def generate_site(session: Session, output_dir: Path, max_articles: int = 100) -
     # Get articles with topics
     articles = get_articles_with_topics(session, limit=max_articles)
 
+    # Collect unique categories and topics for filters
+    categories = set()
+    all_topics = set()
+    for article in articles:
+        if article.get('source_category'):
+            categories.add(article['source_category'])
+        all_topics.update(article.get('topics', []))
+
     # Render index page
     template = env.get_template('index.html')
     html = template.render(
         articles=articles,
+        categories=sorted(categories),
+        topics=sorted(all_topics),
         last_updated=datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
     )
 

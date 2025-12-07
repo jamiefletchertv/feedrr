@@ -1,9 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Filter Section -->
+<div class="filters">
+    <div class="filter-row">
+        <div class="filter-group">
+            <label for="category-filter">Category</label>
+            <select id="category-filter" class="filter-select">
+                <option value="all">All Categories</option>
+                {% for category in categories %}
+                <option value="{{ category }}">{{ category|title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="topic-filter">Topic</label>
+            <select id="topic-filter" class="filter-select">
+                <option value="all">All Topics</option>
+                {% for topic in topics %}
+                <option value="{{ topic }}">{{ topic }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div class="filter-status"></div>
+</div>
+
 <ul class="articles">
     {% for article in articles %}
-    <li class="article">
+    <li class="article" data-category="{{ article.source_category or 'none' }}" data-topics="{{ article.topics|join(',') }}">
         <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer">
             <div class="article-info">
                 <div class="article-meta">

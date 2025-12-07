@@ -17,6 +17,7 @@ def load_sources_from_config(session: Session, sources_config: List[dict]) -> No
             # Update existing source
             existing.name = source_data['name']
             existing.website_url = source_data.get('website_url')
+            existing.category = source_data.get('category')
             existing.enabled = source_data.get('enabled', True)
         else:
             # Create new source
@@ -24,6 +25,7 @@ def load_sources_from_config(session: Session, sources_config: List[dict]) -> No
                 name=source_data['name'],
                 feed_url=source_data['feed_url'],
                 website_url=source_data.get('website_url'),
+                category=source_data.get('category'),
                 enabled=source_data.get('enabled', True)
             )
             session.add(source)

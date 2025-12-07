@@ -37,13 +37,13 @@ sources:
     feed_url: "http://feeds.feedburner.com/broadbandtvnews"
     website_url: "http://feeds.feedburner.com/broadbandtvnews"
     enabled: true
-    catagory: "ott news"
-  
+    category: "ott news"
+
   - name: "Streaming Media"
     feed_url: "http://www.streamingmedia.com/RSS/RSS.articles.0.15.xml"
     website_url: "http://www.streamingmedia.com"
     enabled: true
-    catagory: "ott news"
+    category: "ott news"
 
   # Example: Add more feeds as needed
   # - name: "Example Feed"

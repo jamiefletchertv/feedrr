@@ -16,6 +16,7 @@ class Source(Base):
     name = Column(String(255), nullable=False)
     feed_url = Column(String(500), unique=True, nullable=False)
     website_url = Column(String(500))
+    category = Column(String(100))
     enabled = Column(Boolean, default=True)
     last_fetched = Column(DateTime)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -24,7 +25,7 @@ class Source(Base):
     articles = relationship("Article", back_populates="source")
 
     def __repr__(self) -> str:
-        return f"<Source(name='{self.name}', enabled={self.enabled})>"
+        return f"<Source(name='{self.name}', category='{self.category}', enabled={self.enabled})>"
 
 
 class Article(Base):

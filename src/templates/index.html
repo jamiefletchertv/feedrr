@@ -43,13 +43,21 @@
                     {% if article.content %}
                     <p class="article-preview">{{ article.content | striptags | truncate(200) }}</p>
                     {% endif %}
-                    {% if article.topics %}
                     <div class="article-topics">
+                        {% if article.topics %}
                         {% for topic in article.topics %}
                         <span class="topic-tag">{{ topic }}</span>
                         {% endfor %}
+                        {% endif %}
+                        <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
                     </div>
-                    {% endif %}
                 </div>
                 <div class="article-image">
                     {% if article.image_url %}
@@ -60,32 +68,12 @@
                 </div>
             </div>
 
+            {# Expandable content section (for articles with full content) #}
             {% if article.has_full_content %}
-            {# Articles with full content - show expandable section #}
             <div class="article-content-wrapper">
                 <div class="article-content">
                     <p class="content-text">{{ article.content | striptags }}</p>
                 </div>
-                <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="article-link-btn">
-                    <span>View source</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                    </svg>
-                </a>
-            </div>
-            {% else %}
-            {# Articles without full content - show direct link button #}
-            <div class="article-action">
-                <a href="{{ article.url }}" target="_blank" rel="noopener noreferrer" class="article-link-btn">
-                    <span>View source</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                    </svg>
-                </a>
             </div>
             {% endif %}
         </div>

@@ -1,13 +1,13 @@
-// View toggle functionality
+// View toggle functionality - toggle between 2 states
 (function() {
     const viewToggle = document.getElementById('view-toggle');
     const body = document.body;
 
-    // Load saved preference
+    // Load saved preference (default to list)
     const savedView = localStorage.getItem('feedrr-view') || 'list';
     body.classList.add(`view-${savedView}`);
 
-    // Toggle between views
+    // Toggle between list and cards
     viewToggle.addEventListener('click', function() {
         if (body.classList.contains('view-cards')) {
             body.classList.remove('view-cards');
@@ -79,25 +79,5 @@
     topicFilter.addEventListener('change', applyFilters);
 })();
 
-// Expandable article content
-(function() {
-    // Only handle expandable articles
-    const expandableHeaders = document.querySelectorAll('.article-header.expandable');
-
-    expandableHeaders.forEach(header => {
-        header.addEventListener('click', function(e) {
-            const article = this.closest('.article');
-
-            // Toggle expanded state
-            article.classList.toggle('expanded');
-        });
-    });
-
-    // Prevent link button clicks from triggering article expansion
-    const linkButtons = document.querySelectorAll('.article-link-btn');
-    linkButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-    });
-})();
+// Article expansion is now controlled by view mode, not individual clicks
+// No manual expansion functionality needed

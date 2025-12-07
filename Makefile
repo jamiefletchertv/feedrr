@@ -76,7 +76,7 @@ run-process:
 	uv run feedrr process
 
 run-generate:
-	uv run feedrr generate
+	uv run feedrr generate --max-articles 500
 
 run-build:
 	uv run feedrr build

@@ -84,6 +84,396 @@
 
 <ul class="articles">
     
+    <li class="article " data-category="Blogs" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Schedule AWS Elemental MediaLive channel operations with AWS EventBridge</h2>
+                    <div class="article-meta">
+                        <span class="article-source">AWS M&E</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Live streaming helps businesses engage global audiences with low latency. Cloud-based streaming costs less up front than traditional broadcasting and scales to match your needs. By using...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://aws.amazon.com/blogs/media/schedule-aws-elemental-medialive-channel-operations-with-aws-eventbridge/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://d2908q01vomqb2.cloudfront.net/fb644351560d8296fe6da332236b1f8d61b2828a/2026/01/14/MLEB-Image-1.png" alt="Schedule AWS Elemental MediaLive channel operations with AWS EventBridge" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Live streaming helps businesses engage global audiences with low latency. Cloud-based streaming costs less up front than traditional broadcasting and scales to match your needs. By using serverless Amazon Web Services (AWS) services, you can automatically scale resources to match your exact streaming needs, spinning up channels for major events and efficiently cleaning up afterwards. AWS Elemental MediaLive is a cloud-based, broadcast-grade video processing service you can use to deploy live channels within minutes. This post shows you how to automate MediaLive channel scheduling for both planned and one-time broadcasts, reducing operational costs and overhead while enabling your live streams to start and stop exactly when needed. This solution uses a scalable, serverless architecture that automates channel management with AWS Lambda and Amazon EventBridge. You can concentrate on creating engaging viewer experiences while the infrastructure automatically manages streaming complexities. Solution overview The solution uses these key AWS services: Amazon DynamoDB stores channel scheduling information, including start times, end times, and channel IDs. When users create a schedule, Amazon DynamoDB Streams triggers an AWS Lambda Lambda functions process the schedule entries and create corresponding schedulers in Amazon EventBridge. Amazon EventBridge orchestrates the channel management workflows based on the defined schedules. Amazon EventBridge Scheduler executes the scheduled tasks at specified times, triggering the start and stop workflows. AWS Step Functions coordinates the workflow that: Starts or stops the MediaLive channel Verifies the channel status Sends notifications through Amazon Simple Notification Service (Amazon SNS) Figure 1 shows the architecture for this solution. Figure 1: High-level architecture for the solution with serverless application. Prerequisites Before you begin, ensure you have the following: An AWS account. An AWS Identity and Access Management (IAM) user with sufficient permissions to deploy the AWS resources described in the solution overview, including DynamoDB, Lambda, EventBridge, Step Functions, and Amazon SNS. AWS Cloud Development Kit (AWS CDK) command line installed and your AWS environment bootstrapped. For more information, refer to the AWS CDK Developer Guide. A running channel on MediaLive. For more information, refer to Creating a channel from scratch. Walkthrough In this section, we walk you through the steps to schedule MediaLive channel operations with AWS EventBridge. The walkthrough follows these high-level steps: Provision required AWS components Add channel schedules to DynamoDB Verify your schedule Test your schedule Complete the steps in the following sections. Provision required AWS components To deploy the solution using AWS CDK, on the AWS Management Console, navigate to AWS CloudShell, as shown in the following screenshot. Figure 2: AWS CloudShell icon on the console navigation bar. Enter the following command to install the stack: git clone https://github.com/aws-samples/cyrustc-sample.git cd cyrustc-sample/elemental-medialive-schedule-automation npm install && npm run deploy Figure 3: Paste the command into the CloudShell console. The deployment takes approximately 5 minutes. When it’s complete, you receive a confirmation message, as shown in the following screenshot. Figure 4: Successful deployment confirmation. Add channel schedules to DynamoDB In this step, you define the criteria to automatically start and stop a MediaLive channel. Each schedule entry applies to one specific MediaLive channel and includes stream health monitoring so your channel runs properly beyond basic start and stop operations. To create a schedule entry, follow these steps: Navigate to the DynamoDB console You should find a table with name starting with media-scheduler, as shown in the following screenshot. Figure 5: DynamoDB tables list showing media-scheduler table. Choose the table and choose Explore table items, as shown in the following screenshot. Figure 6: Table exploration view. Scroll down and choose Create item Figure 7: Create item in the table. Choose JSON view and enter the following configuration: { "mediaChannelId": { "S": <Your channel ID> }, "startDateTime": { "S": "2025-02-03T09:35:00+00:00" }, "endDateTime": { "S": "2025-02-11T09:40:00+00:00" }, "manifestUrl": { "S": <Your HLS or DASH manifest URL for end users> } } mediaChannelId: This is the unique MediaLive channel ID and can be obtained from the MediaLive console. Each entry schedules one specific channel. For more information, visit Viewing a channel configuration. startDateTime and endDateTime: Input a date time in ISO8601 format. The automation will start and stop accordingly. manifestUrl: Enter your HTTP Live Streaming (HLS) or Dynamic Adaptive Streaming over HTTP (DASH) manifest URL. The automation will verify the connectivity after the channel is started. You will be notified if the health check fails. Choose JSON view and confirm that the input values are correct, then choose Create item, as shown in the following screenshot. Figure 8: JSON configuration for schedule entry. You have now added your schedule. Verify your schedule After you add your schedule entry to the table, DynamoDB triggers Step Functions through EventBridge. The system automatically creates an EventBridge schedule based on the table data. To view these scheduled events: Navigate to the Amazon EventBridge console. In the navigation pane, choose Schedule. Locate the schedule that was created. Each automation is programmed to start 10 minutes before your specified startDateTime, providing adequate preparation time. You can identify events by their naming convention because each begins with your MediaLive channel ID. Choose an individual event to view its details. Verify detailed configuration and status information. The following screenshot shows the Schedule tab with the configuration and status information. Figure 9: EventBridge schedule details. Note: The Amazon EventBridge schedule is automatically removed after it starts. Test your schedule Ten minutes before your scheduled start time, EventBridge triggers the WorkflowStateMachine. To monitor workflow execution: Navigate to the AWS Step Functions console. Choose State machines. Choose the state machine named WorkflowStateMachine. Choose Executions to view running workflows. Choose an execution to view its progress. Verify the workflow completes these steps: Starts the AWS Elemental MediaLive channel. Waits 60 seconds for the channel to initialize. Checks the manifest URL for stream health. Sends a notification through Amazon SNS. If the health check fails, you receive an SNS notification with error details. The following diagram shows a complete workflow execution in Step Functions. Figure 10: A complete workflow execution in Step Functions. Clean up resources To avoid incurring future charges, delete the CDK or CloudFormation stack named ElementalMedialiveAutomationStack, which you deployed in Provision required AWS components. Conclusion This serverless solution automates AWS Elemental MediaLive channel management with AWS Lambda, Amazon EventBridge, and AWS Step Functions. You control costs by only running channels when needed. This automated approach delivers two key benefits: Teams can focus on creating engaging content rather than managing infrastructure Organizations gain efficient resource allocation and cost control through automated scheduling This architecture provides a foundation for organizations to scale their streaming capabilities while minimizing operational overhead. If you need further information, create an issue on this GitHub repository or contact your account team. Further resources Getting Started with AWS Elemental MediaLive What is Event-Driven Architecture? Getting Started with Serverless Compute</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">What happens in space during a medical emergency?</h2>
+                    <div class="article-meta">
+                        <span class="article-source">BBC News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">BBC science correspondent Pallab Ghosh explains what happens if an astronaut gets ill in space.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.bbc.com/news/videos/c99kmgzp1jro?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/917b/live/863f8a00-f24d-11f0-b385-5f48925de19a.jpg" alt="What happens in space during a medical emergency?" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">NHS limiting ADHD assessments to save money despite soaring demand</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">FoIs show integrated care boards are curbing assessments but have not told GPs or patients who face long waitsThe NHS is restricting people’s ability to be assessed for attention deficit...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/society/2026/jan/15/nhs-limiting-number-of-adhd-assessments-despite-soaring-demand" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/ab135a9793a6382fa75af357eea3bf4fd735deb0/354_0_4750_3800/master/4750.jpg?width=140&quality=85&auto=format&fit=max&s=0d1b56563c123ca905d6700be0950117" alt="NHS limiting ADHD assessments to save money despite soaring demand" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">FoIs show integrated care boards are curbing assessments but have not told GPs or patients who face long waitsThe NHS is restricting people’s ability to be assessed for attention deficit hyperactivity disorder in order to save money but not telling GPs or patients, despite soaring demand for the service.More than half of the NHS’s 42 integrated care boards (ICBs) in England have imposed limits on how many people can be assessed for ADHD during 2025-26, freedom of information responses show. Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Ask HN: What are your best purchases under $100?</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Hacker News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://news.ycombinator.com/item?id=46638331" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="static/images/placeholder.svg" alt="Ask HN: What are your best purchases under $100?">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Andean artist Antonio Paucar wins Artes Mundi prize in Wales</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Artist and beekeeper who highlights eco crisis plans to spend £40,000 award on building cultural centre in PeruAn artist and beekeeper from a remote corner of the Andes has won one of the UK’s...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/artanddesign/2026/jan/15/antonio-paucar-andes-peru-wins-artes-mundi-prize-wales" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/89a150cb9834965c9e817ded31a74a798f0ef3a8/865_0_4325_3460/master/4325.jpg?width=140&quality=85&auto=format&fit=max&s=523f8732f69891569e975ec576e6be75" alt="Andean artist Antonio Paucar wins Artes Mundi prize in Wales" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Artist and beekeeper who highlights eco crisis plans to spend £40,000 award on building cultural centre in PeruAn artist and beekeeper from a remote corner of the Andes has won one of the UK’s most prestigious contemporary arts awards and plans to spend the £40,000 prize on building a cultural centre in the Peruvian mountains.Antonio Paucar was declared the winner of the biennial Artes Mundi prize after presenting work ranging from a spiral made of alpaca wool to a video of him writing a poem – in his own blood – about the environmental crisis facing his region as he sits at a table high in the mountains. Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Verizon Is Slipping Customers 20 Bucks to Pay for Yesterday’s Outage</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Gizmodo</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">The carrier is offering a $20 credit to customers affected by a widespread and hours-long service outage on Wednesday.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://gizmodo.com/verizon-is-slipping-customers-20-bucks-to-pay-for-yesterdays-outage-2000710778" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://gizmodo.com/app/uploads/2025/05/Verizon-1280x853.jpg" alt="Verizon Is Slipping Customers 20 Bucks to Pay for Yesterday’s Outage" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Geopolitical football: Iran? Trump? How the game can stand strong in a fractured world</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">The 2026 World Cup is set to be a polarising event but, even if it will not be the first to be politically contentious, it will expose a growing uneaseFive months out from the World Cup the...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/football/2026/jan/15/geopolitical-football-iran-trump-how-can-the-game-stand-strong-in-a-fractured-world" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/dc03f9e84afb7edd4a4ecff7c20ceb23fa0be610/367_0_3289_2632/master/3289.jpg?width=140&quality=85&auto=format&fit=max&s=71f17732d80b573a8517cd9071e0b732" alt="Geopolitical football: Iran? Trump? How the game can stand strong in a fractured world" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">The 2026 World Cup is set to be a polarising event but, even if it will not be the first to be politically contentious, it will expose a growing uneaseFive months out from the World Cup the politics are impossible to avoid. There are concerns relating to one of the host countries, the US, with armed immigration officials roaming through its cities and visa restrictions ramped up against foreign visitors. One qualifying nation, Iran, is experiencing a public uprising against its leadership, with the regime attacking its citizens in response. Among other qualifiers there are concerns over democratic backsliding in Tunisia, ecological crimes in Ecuador and , in the future host country Saudi Arabia. And that’s just for starters.It sometimes feels as if this summer’s tournament, the one Gianni Infantino recently described as “the greatest show ever on planet Earth”, will serve as an inescapable reminder of the depressing state of the world in 2026. It could yet be an event that goes down in infamy. But it is hardly the only tournament to have prompted ethical concerns and serves as a reminder that the issue of how global sport should engage with such issues has remained largely unresolved. Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Jenrick defects to Reform UK after being sacked by Tories</h2>
+                    <div class="article-meta">
+                        <span class="article-source">BBC News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">The former minister says the Conservatives "broke Britain", as Nigel Farage welcomes him to his party.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.bbc.com/news/articles/cwyrpdy42n1o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/faf6/live/6b705ef0-f24f-11f0-a422-4ba8a094a8fa.jpg" alt="Jenrick defects to Reform UK after being sacked by Tories" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
     <li class="article article-no-expand" data-category="World" data-topics="General">
         <div class="article-container">
             <div class="article-header ">
@@ -340,14 +730,19 @@
                         
                         
                         
-                        <a href="https://www.theguardian.com/commentisfree/2026/jan/15/the-guardian-view-on-robert-jenricks-defection-britains-right-is-in-a-crisis-of-its-own-making" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
+                        <span class="trending-tag" title="Also covered by: {'name': 'Guardian', 'url': 'https://www.theguardian.com/politics/2026/jan/15/robert-jenrick-defects-to-reform-uk-after-conservative-party-suspension'}">
                             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
                             </svg>
-                        </a>
+                            Trending (2 sources)
+                        </span>
+                        <button class="source-tag source-tag-expandable" data-article-id="15205">
+                            Sources (2)
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron">
+                                <polyline points="6 9 12 15 18 9"></polyline>
+                            </svg>
+                        </button>
                         
                     </div>
                 </div>
@@ -368,6 +763,29 @@
             
 
             
+            
+            <div class="duplicate-sources" id="sources-15205" style="display: none;">
+                <div class="duplicate-sources-list">
+                    <a href="https://www.theguardian.com/commentisfree/2026/jan/15/the-guardian-view-on-robert-jenricks-defection-britains-right-is-in-a-crisis-of-its-own-making" target="_blank" rel="noopener noreferrer" class="duplicate-source-link">
+                        <span class="duplicate-source-name">Guardian</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    
+                    <a href="https://www.theguardian.com/politics/2026/jan/15/robert-jenrick-defects-to-reform-uk-after-conservative-party-suspension" target="_blank" rel="noopener noreferrer" class="duplicate-source-link">
+                        <span class="duplicate-source-name">Guardian</span>
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                            <polyline points="15 3 21 3 21 9"></polyline>
+                            <line x1="10" y1="14" x2="21" y2="3"></line>
+                        </svg>
+                    </a>
+                    
+                </div>
+            </div>
             
         </div>
     </li>
@@ -1218,6 +1636,52 @@
                 <div class="article-image">
                     
                     <img src="static/images/placeholder.svg" alt="Zuck#: A programming language for connecting the world. And harvesting it">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Train fare evader facing jail time over 112 unpaid tickets</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Sky News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 15, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Charles Brohiri is facing jail over 112 convictions for not paying for a train ticket. Pic: PA</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://news.sky.com/story/train-fare-evader-with-112-convictions-for-unpaid-train-tickets-could-face-jail-time-13494743" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-rail-crime_7136497.jpg?20260115183951" alt="Train fare evader facing jail time over 112 unpaid tickets" onerror="this.src='static/images/placeholder.svg'">
                     
                 </div>
             </div>
@@ -23842,442 +24306,6 @@
         </div>
     </li>
     
-    <li class="article article-no-expand" data-category="General" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Project SkyWatch (a.k.a. Wescam at Home)</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Hacker News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://ianservin.com/2026/01/13/project-skywatch-aka-wescam-at-home/" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="static/images/placeholder.svg" alt="Project SkyWatch (a.k.a. Wescam at Home)">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Six arrested over suspected £300m fraud at UK social housing fund</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Serious Fraud Office mounts seven raids on sites linked to Home Reit which raised £850m to tackle homelessnessThe Serious Fraud Office has arrested six people and raided seven sites in connection...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/business/2026/jan/14/six-suspects-arrested-in-300m-probe-at-uk-social-housing-fund" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/65fd5693c418ca7c75435d3757d6c567ff62f678/953_0_2813_2250/master/2813.jpg?width=140&quality=85&auto=format&fit=max&s=8bace5cd0789b01961c5267cd912192d" alt="Six arrested over suspected £300m fraud at UK social housing fund" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Serious Fraud Office mounts seven raids on sites linked to Home Reit which raised £850m to tackle homelessnessThe Serious Fraud Office has arrested six people and raided seven sites in connection with a bribery and fraud investigation into a social housing fund.The agency estimated there had been £300m of “suspected offending” at Home Reit, which was once listed on the London Stock Exchange. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Liz Kendall’s response to X ‘nudification’ is good – but not enough to solve the problem | Nana Nwachukwu</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Big tech companies cannot be trusted. It is not enough that they remove harm when they find it – the law must make their systems prevent harmOn X, a woman posts a photo in a sari, and within...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/commentisfree/2026/jan/14/liz-kendall-x-grok-nudification" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/d450320a5269e2e7c70f694c35c5a3efa1ebc155/773_0_4190_3352/master/4190.jpg?width=140&quality=85&auto=format&fit=max&s=8008877c518f8185e1b38ef17a1d290d" alt="Liz Kendall’s response to X ‘nudification’ is good – but not enough to solve the problem | Nana Nwachukwu" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Big tech companies cannot be trusted. It is not enough that they remove harm when they find it – the law must make their systems prevent harmOn X, a woman posts a photo in a sari, and within minutes, various users are underneath the post tagging Grok to strip her down to a bikini. It is a shocking violation of privacy, but now a familiar and commonplace practice. Between June 2025 and January 2026, I documented 565 instances of users requesting Grok to create nonconsensual intimate imagery. Of these, 389 were requested in just one day.Last Friday, after a backlash against the platform’s ability to create such nonconsensual sexual images, X announced that Grok’s AI image generation feature would only be available to subscribers. Reports suggest that the bot now no longer responds to prompts to generate images of women in bikinis (although apparently will still do so for requests about men).Nana Nwachukwu is an AI governance expert and a PhD researcher at Trinity College Dublin Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="General" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">British Police Used Microsoft Copilot for Faulty Report That Led to Ban on Soccer Team Fans</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Gizmodo</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Microsoft's AI assistant hallucinated a soccer match.</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://gizmodo.com/british-police-used-microsoft-copilot-for-faulty-report-that-led-to-ban-on-soccer-team-fans-2000710201" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://gizmodo.com/app/uploads/2026/01/shutterstock_1927683392-1280x853.jpg" alt="British Police Used Microsoft Copilot for Faulty Report That Led to Ban on Soccer Team Fans" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Labour still faces risks on energy despite ‘record’ wind power auction | Nils Pratley</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Government hails step towards clean power in Great Britain by 2030 – but the auction shows trade-offs are now neededOffshore windfarm contracts to fuel 12m homes in Great Britain after record...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/business/2026/jan/14/labour-wind-power-risks-clean-power-great-britain" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/ae194759ab246c9f9d80ac7ec6209888b31dd133/150_0_4639_3710/master/4639.jpg?width=140&quality=85&auto=format&fit=max&s=53a7078349c5b4d2f5d71b961934af12" alt="Labour still faces risks on energy despite ‘record’ wind power auction | Nils Pratley" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Government hails step towards clean power in Great Britain by 2030 – but the auction shows trade-offs are now neededOffshore windfarm contracts to fuel 12m homes in Great Britain after record auctionEd Miliband: With this record wind power auction, we’ve proved the rightwing doubters wrongThe government has defied gloomy price expectations for its latest auction for offshore wind capacity. The worry a few months ago was that bill payers would be forced to pay more than £100 a megawatt hour (MWh) via contracts that give developers guaranteed prices for their electricity output. In the event, winning projects landed at roughly £91/MWh.Cue some forgivable crowing from Ed Miliband, the energy secretary. “A monumental step towards clean power by 2030,” he declared. Officials pointed to calculations by the energy consultants Aurora and Baringa that £94/MWh would have been a “cost-neutral” outcome for consumers even though today’s wholesale price, usually set by gas generation, is about £81/MWh (the analysts’ reasoning is that using less gas lowers the wholesale price, offsetting the cost of the subsidies for new windfarms). Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Sex, drugs and sugar babies: first trailer for Euphoria season three drops</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Sam Levinson’s hit HBO drama series returns in April with Zendaya, Sydney Sweeney and Jacob Elordi returningThe first trailer for the third season of Euphoria promises more sex, drugs and...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/tv-and-radio/2026/jan/14/euphoria-first-trailer" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/b985c2a73b44ec27e6476d97253409dc4d9105fc/320_0_1600_1280/master/1600.jpg?width=140&quality=85&auto=format&fit=max&s=33b143600a694c949fd093ce6c9f5d09" alt="Sex, drugs and sugar babies: first trailer for Euphoria season three drops" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Sam Levinson’s hit HBO drama series returns in April with Zendaya, Sydney Sweeney and Jacob Elordi returningThe first trailer for the third season of Euphoria promises more sex, drugs and violence, teasing a troubled life after high school for the show’s characters.Zendaya, Sydney Sweeney, Hunter Schafer and Jacob Elordi are among those returning for episodes four years in the making. The new season will take place five years after the characters were last seen. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">US launches phase two of plan to end Gaza conflict, including creation of transitional authority</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Sky News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Palestinians walk amid buildings destroyed by Israeli air and ground operations in the Zeitoun neighborhood of Gaza City, Wednesday, Jan. 14</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://news.sky.com/story/us-launches-phase-two-of-plan-to-end-gaza-conflict-including-creation-of-transitional-authority-13494283" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-gaza-zeitoun_7135341.png?20260114174623" alt="US launches phase two of plan to end Gaza conflict, including creation of transitional authority" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">US moves to transitional government in Gaza</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Sky News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Aftermath of an Israeli strike on a house, in the central Gaza Strip, January 9, 2026. REUTERS/Mahmoud Issa</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://news.sky.com/story/us-announces-launch-of-phase-two-to-end-conflict-in-gaza-13494283" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-gaza-israeli-strike_7130827.jpg?20260109075320" alt="US moves to transitional government in Gaza" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="General" data-topics="Business">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Bill Gates-backed Type One Energy raises $87M ahead of $250M Series B</h2>
-                    <div class="article-meta">
-                        <span class="article-source">TechCrunch</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 14, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Type One Energy has raised more than $160 million from investors to date. The new funding will help the company further refine its stellarator technology.</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">Business</span>
-                        
-                        
-                        
-                        <a href="https://techcrunch.com/2026/01/14/bill-gates-backed-type-one-energy-raises-87m-ahead-of-250m-series-b/" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="static/images/placeholder.svg" alt="Bill Gates-backed Type One Energy raises $87M ahead of $250M Series B">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
 </ul>
 
 
@@ -24287,7 +24315,7 @@
     <footer>
         <p>
             Generated by <a href="https://github.com/jamiefletchertv/feedrr">feedrr</a> •
-            Last updated: 2026-01-15 19:47 UTC
+            Last updated: 2026-01-15 20:26 UTC
         </p>
     </footer>
 

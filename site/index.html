@@ -86,6 +86,870 @@
 
 <ul class="articles">
     
+    <li class="article " data-category="OTT" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Beyond 264</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Jan Ozer</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Before comparing your existing H.264 encodes to HEVC, AV1, or any other advanced codec, you need a baseline you can trust. In practice, most codec efficiency claims collapse once you examine how...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://streaminglearningcenter.com/articles/beyond-264.html" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://streaminglearningcenter.com/wp-content/uploads/2026/01/by264_pt_1a.jpg" alt="Beyond 264" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Before comparing your existing H.264 encodes to HEVC, AV1, or any other advanced codec, you need a baseline you can trust. In practice, most codec efficiency claims collapse once you examine how inefficient the underlying H.264 ladder actually is. This article focuses on fixing that baseline before any codec comparison begins. Let’s take a step back. This is the second in a series of articles on the steps you should take before adopting a codec other than H.264. The first article is entitled, Beyond H.264. Why Codec Choices Now Carry Legal and Financial Risk, and details how advanced codecs like HEVC, AV1, VP9, and VVC are likely subject to royalties for streaming services that deploy them. As I discuss in the first article, if you’re deploying any advanced codec for 4K/HDR content, you likely don’t have the option to use H.264. So, it’s use HEVC/AV1 or don’t publish HDR. In these cases, any associated royalties are a cost of doing business you need to bake into your pricing schema. On the other hand, if you’re considering an advanced codec for bandwidth efficiency, content royalties dramatically increase the cost of implementation. In my upcoming course, Beyond H.264, I present a fixed analysis for all companies that have either implemented VP9/HEVC/AV1 and are wondering if it makes economic sense, and those in the planning stages of implementing these codecs. Towards an Accurate Analysis of H.264 Step 1, discussed in this article, is to ensure you’re encoding your H.264 streams as efficiently as possible. Obviously, any improvements here benefit your operation going forward, and full optimization provides the most accurate baseline for comparing any advanced codec. In the course, I address this complete list. H.264 Efficiency Techniques Major levers Per‑title / per‑scene content adaptation Per-genre encoding Encoder implementation Medium levers Preset / speed–quality point (within an encoder) Bitrate‑control mode (CBR, capped VBR/CRF, etc.) GOP structure and prediction (size, B‑frames, refs, scene‑cut I‑frames) Minor levers Psychovisual tools (AQ, psy‑RD, grain, denoise, etc.) These levers do not combine linearly, and optimizing one can mask or distort the impact of another. In this article, I’ll briefly explore the first two, per-title and per-genre encoding, which have by far the most potential impact. Per-Title Encoding Per-title encoding, also called content-adoptive encoding, creates a custom encoding ladder for each video file. Netflix coined per-title in its seminal article entitled, Per-Title Encode Optimization, published in 2015. The high-level premise is that all video files are different, so using the same ladder for all encodes is inherently inefficient. In subsequent tests using per-scene adaptations, Netflix claimed, “One can notice that the dynamic optimizer improves all three codecs by approximately 28–38%.” Those figures are directionally useful, but the more important takeaway is that static ladders leave a ton of efficiency on the table before any codec change is considered. Of course, the advantages of per-title encoding go far beyond avoiding pool-related content royalties. It’s an encoding-only solution you can implement without extensive playback or other testing. There’s no double encoding of files, as when using another codec, so storage costs decrease, and caching becomes even more efficient. Despite these obvious advantages, the latest Bitmovin Video Developer Report found that only 27% of companies have implemented per-title. Figure 1. Despite the obvious benefits, per-title adoption is still modest. Full stop, take a breath. If you recommend that your service deploy HEVC or AV1 before implementing some form of per-title, you’re committing transcoding malpractice. How to Implement Per-Title There are multiple ways to implement per-title encoding. First, you can implement capped CRF encoding, or a similar mode available for all codecs, including hardware transcoding for live use. I just finished a consulting project where the publisher distributed AVC/VP9 for VOD and AVC/AV1 for live using NVIDIA-based transcoding, and all streams were a form of per-title. Second, you can use an encoding service that offers per-title. AWS, Beamr, Bitmovin, Brightcove, Tencent, and many others all offer per-title encoding. Upload your file, and you can download a ladder customized for the file. Or you can create your own per-title, which is what I did for the course. For the analysis in this article and the course, I needed a method that was transparent, repeatable, and codec-agnostic, rather than a black-box optimization service. To explain, as you’ll see in future articles, in order to understand the bandwidth benefits that advanced codecs deliver, you must create equivalent ladders using all the codecs. So, if you’re starting with H.264, you need to understand the equivalent HEVC or AV1 ladder to compute bandwidth savings and QoE improvements. To get there, I created two Python apps called Phase 1 and Phase 2. Phase 1 uses a target VMAF value, such as 93 or 95, to identify the top rung of your encoding ladder. You set the VMAF value, identify the file and the codec, and Phase 1 triangulates encodes until the target VMAF is met. It’s a brute-force technique that’s less efficient than the AI, but it works. Figure 2. Resolutions deployed in Phase 2, along with other parameters. Phase 2 uses a technique debuted by Tencent to create the encoding ladder. The top rung, of course, is produced by Phase 1. For rung 2, Phase 2 encodes at the rung-one resolution (say 1080p) and the next lowest resolution (say 900p), measures VMAF, and chooses the file with the higher VMAF score. Rinse and repeat until the lowest bitrate threshold is met. You see the resolutions in Figure 2, along with the rung multiplier (.6), which controls the between-rung bitrate, the minimum bitrate target, and the scaling method. This is a convex-hull “lite” approach. Instead of testing every resolution at every bitrate, as Netflix’s original technique did, it tests the rungs most likely to deliver the best quality. This approach produces consistent ladders while still exposing how different content responds to bitrate and resolution trade-offs, which becomes important when aggregating results across files or genres. Identifying the Benefits of Per-Title and Per-Genre I used Phases 1 and 2 to create per-title encoding ladders for about 20 test files across five genres: sports, anime, news, music, and movies. I needed a fixed-bitrate ladder for comparison, so I used Netflix’s pre-per-title ladder from this article, excluding the three rungs shown below. While Netflix no longer uses this ladder, it remains a useful reference point for evaluating the cost of static assumptions. Figure 3. Netflix’s mothballed fixed ladder. I encoded the files using per-title and fixed ladder using the same basic parameters shown in the command string below. Then, using another applet I wrote called Phase_Analyzer, I entered the results and analyzed them overall and by genre. For each file and genre, this produced the results shown in Figure 2. Figure 4. Anime genre results. Click the figure to view it at full resolution. Using the average values from the genre results, I created genre-based ladders and re-encoded each file a third time. Note that the genres had between two and five files each, which likely affected the results; any publisher creating a genre-based average ladder should include more files. Figure 3 shows the overall results, with BD-Rate results. Overall, the per-title encode was about 35.34% more efficient than the fixed ladder and 2.3% more efficient than the genre-based approach. The genre-based encoding was 23.73% more efficient than the fixed ladder. Figure 3. Overall results from 18 files in 5 genres. Click the figure to see it at full resolution. For those interested in such things, the aggregate BD-Rate table was computed by averaging the BD-Rate tables across all files, rather than by averaging the data and computing BD-Rate from the average. I’m deliberately not showing aggregated RD curves since, particularly in this case, where there’s a significant disparity in rung count between the different techniques, aggregated BD-Rate curves distort the data. Figure 4 presents RD-curves and BD-rate data for a 60p soccer clip. You can see that Netflix’s top-quality target was likely in the 95 VMAF range, rather than the 93 I targeted, though both per-title and per-genre results are clearly more efficient than the fixed ladder. As mentioned, with the Phase 1 tool, you can set the VMAF target appropriate for your service and, of course, encode using your current fixed ladder for comparison. Figure 4. RD-Curves and BD-Rate data for a 60 fps 1080p soccer video. I’m certain that the genre results will become less effective than the per-title results as the numbers in each genre increase. I’ll have updated results in the course when it ships in late February. Costs of Per-Title vs. Per-Genre Between a single global ladder and fully per-title ladders sits a practical middle ground: genre-based ladders that trade some optimality for operational simplicity. To implement per-title using the techniques shown above, you must encode each file about 15-20 times. This includes 4-7 times to find the target VMAF score in Phase 1, and roughly 2x the encodes for the number of ladder rungs below the top rung. This sounds like a lot, but it’sa fraction of the encodes run by Netflix when they started deploying per-title back in 2016. Obviously, this makes sense at Netflix’s view counts, though perhaps not for your services. To implement per-category, you’ll have to run 10-20 files in each category through this analyis to find a good average ladder. Once you have your genre-specific ladder, your encoding costs won’t change beyond the administrative cost of implementing and monitoring multiple encoding ladders. While this 2-pass fueled technique is obviously designed for VOD, the analysis should apply to live as well. Summing Up All that said, I present the above analysis here and in the course more to promote action than to advocate this specific approach. If you’re considering HEVC, AV1, VP9, or VVC and haven’t fully optimized H.264 with per-title or per-genre tools, and other efficiency techniques, you’re working in reverse order. Beyond H.264 gives you a structured methodology, Python tooling examples, and workbook-style models to 1) maximize your AVC efficiency, 2) quantify bandwidth and QoE gains from advanced codecs, and 3) factor in royalty and infrastructure costs before you commit. If you want to walk into your next codec discussion with hard numbers instead of anecdotes, that’s exactly what the course is designed to deliver. What This Article Does Not Prove I’m adding this section to narrow any unnecessary debate regarding this article. First, this analysis is deliberately narrow. It does not prove that per-title encoding is always the right operational choice. Per-title minimizes bitrate for a given asset and quality target, but it also increases encoding complexity and ABR-ladder variability. Whether that tradeoff is acceptable depends on your scale, content mix, and operational maturity, not just compression efficiency. It also does not prove that genre-based ladders will consistently rival per-title results. In this dataset, genre ladders recovered a substantial portion of per-title savings, but that outcome depends on how coherent the genre is and how well the ladder reflects its typical characteristics. Different genres, different libraries, or different quality targets could produce different results. This analysis does not address playback performance or business outcomes. All comparisons here are codec-side measurements at equal quality, not end-to-end QoE or revenue impact. Finally, it does not prove that deploying only H.264 is appropriate for all organizations, nor that deploying advanced codecs is inadvisable. The point is to show that codec comparisons are meaningless unless the baseline they are measured against is credible. What this analysis does show is that if you don’t understand how much efficiency is left on the table in your existing H.264 workflow, any claimed savings from a new codec are, at best, uncalibrated. Appendix I: Command String Here’s the promised command string: this is for rung 2. Note that I tuned for PSNR and set aq-mode to 0 to eliminate any psychovisual confiuraions that would reduce quality metrics scores. ffmpeg -i football60_short.mp4 -an -c:v libx264 -preset veryslow -tune psnr -aq-mode 0 -b:v 2070k -maxrate 4140k -bufsize 4140k -g 120 -keyint_min 120 -sc_threshold 0 -threads auto -vf scale=1920:1080:flags=lanczos -pass 1 -f mp4 nul ffmpeg -y -i football60_short.mp4 -an -c:v libx264 -preset veryslow -tune psnr -aq-mode 0 -b:v 2070k -maxrate 4140k -bufsize 4140k -g 120 -keyint_min 120 -sc_threshold 0 -threads auto -vf scale=1920:1080:flags=lanczos -pass 2 football60_short_r02_same_1920x1080_2070k.mp4 The post Beyond 264 first appeared on Streaming Learning Center.</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Ryan Coogler Spills the Tea on What Smoke and Stack Were Up to Before ‘Sinners’</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Gizmodo</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Before the twins had their barn-burning shindig at the juke joint, they were globe-trotting and breaking hearts.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://gizmodo.com/ryan-coogler-sinners-prequel-smoke-stack-2000715470" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://gizmodo.com/app/uploads/2026/01/Sinners-Michael-B-Jordan-Ryan-Coogler-1280x853.jpg" alt="Ryan Coogler Spills the Tea on What Smoke and Stack Were Up to Before ‘Sinners’" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Tesla’s energy storage business is growing faster than any other part of the company</h2>
+                    <div class="article-meta">
+                        <span class="article-source">TechCrunch</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Energy storage products like the Megapack, Megablock, and Powerwall drove</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://techcrunch.com/2026/01/29/teslas-energy-storage-business-is-growing-faster-than-any-other-part-of-the-company/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="static/images/placeholder.svg" alt="Tesla’s energy storage business is growing faster than any other part of the company">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">This Spider’s ‘Pearl Necklace’ Looks Fancy—Until You Learn What It Really Is</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Gizmodo</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Nature is awesome, but it can also be super gross.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://gizmodo.com/this-spiders-pearl-necklace-looks-fancy-until-you-learn-what-it-really-is-2000715237" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://gizmodo.com/app/uploads/2026/01/spider-with-mites-1280x853.jpg" alt="This Spider’s ‘Pearl Necklace’ Looks Fancy—Until You Learn What It Really Is" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Spotify rolls out group chats</h2>
+                    <div class="article-meta">
+                        <span class="article-source">TechCrunch</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Spotify users can now share the podcasts, playlists, and audiobooks they're listening to with up 10 people.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://techcrunch.com/2026/01/29/spotify-rolls-out-group-chats/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="static/images/placeholder.svg" alt="Spotify rolls out group chats">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Apple’s new iPhone and iPad security feature limits cell networks from collecting precise location data</h2>
+                    <div class="article-meta">
+                        <span class="article-source">TechCrunch</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">The new security feature makes it more difficult for police and malicious hackers to obtain a person's precise location data from a cell phone company.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://techcrunch.com/2026/01/29/apples-new-iphone-and-ipad-security-feature-limits-cell-networks-from-collecting-precise-location-data/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="static/images/placeholder.svg" alt="Apple’s new iPhone and iPad security feature limits cell networks from collecting precise location data">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Chasing Summer review – incoherent small-town comedy is a baffling car crash</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Sundance film festival: comedian Iliza Shlesinger’s nonsensical misfire is a swirl of cliches, unfunny comedy, stock characters and bizarre direction from Josephine DeckerI will give Chasing...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/film/2026/jan/29/chasing-summer-sundance-review-comedy" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/250e7234b7a6b558d5e58a000856920f5957a5df/414_0_2248_1800/master/2248.jpg?width=140&quality=85&auto=format&fit=max&s=d7ecd38c247b8d50a79de21e948b2f1b" alt="Chasing Summer review – incoherent small-town comedy is a baffling car crash" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Sundance film festival: comedian Iliza Shlesinger’s nonsensical misfire is a swirl of cliches, unfunny comedy, stock characters and bizarre direction from Josephine DeckerI will give Chasing Summer this: there’s something inherently interesting about its unexpected union of two opposite forces. On one side there’s Josephine Decker, an unusual film-maker whose genre-challenging work spans experimental theater (2019’s Madeline’s Madeline), claustrophobic psychodrama (2020’s perversely thrilling, woefully underseen Shirley) and magical realism (the 2022 YA grief flick The Sky Is Everywhere). On the other, comedian Iliza Shlesinger, whose brand of fast-paced, ribald, sometimes hilarious (and sometimes too gender-essentialist) standup is both subverted and enhanced by her own white, blond conventional attractiveness. I can’t imagine many saw the former choosing to direct Chasing Summer, a Hallmark-esque comedy written by and starring the latter. Theoretically, the collision should generate sparks.It does, though I can’t imagine in the way the odd couple intended. The 98-minute film, which premiered this week at Sundance, is one of the most bizarre combinations of director and material I’ve ever seen, more curious car crash than collaboration. It is almost worth it to watch a sensitive and surprising director, so attuned to inner turmoil and unreality, wrangle anything substantial out of razor-thin characters and a boilerplate set-up.Chasing Summer is screening at the Sundance film festival and is seeking distribution Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">China to relax travel rules for British visitors, UK says</h2>
+                    <div class="article-meta">
+                        <span class="article-source">BBC News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">It comes as Sir Keir Starmer visits Beijing - the first UK prime minister to do so in eight years.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.bbc.com/news/articles/c150yv75pn7o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/5666/live/1a709de0-fcdf-11f0-853a-2b6f40b40d41.jpg" alt="China to relax travel rules for British visitors, UK says" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">6 Samsung Galaxy Buds 4 Leaks That Have Already Dripped Out</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Gizmodo</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">With Samsung's next Unpacked event likely around the corner, Galaxy Buds 4 and 4 Pro rumors are pouring in.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://gizmodo.com/6-samsung-galaxy-buds-4-leaks-that-have-already-dripped-out-2000715190" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://gizmodo.com/app/uploads/2025/09/Samsung-Galaxy-Buds-3-FE-4-1280x853.jpg" alt="6 Samsung Galaxy Buds 4 Leaks That Have Already Dripped Out" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Girl, 7, swept out to sea on holiday in Morocco</h2>
+                    <div class="article-meta">
+                        <span class="article-source">BBC News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Inaayah Makda remains missing after being caught out by a rapidly incoming tide, a relative has said.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.bbc.com/news/articles/cm2j0l85dvro?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/7c61/live/a579a610-fd1c-11f0-8de9-b9e0f3a8919a.jpg" alt="Girl, 7, swept out to sea on holiday in Morocco" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Tokyo blossom and ice on the Hudson: photos of the day – Thursday</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">The Guardian’s picture editors select photographs from around the world Continue reading...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/news/gallery/2026/jan/29/tokyo-blossom-ice-hudson-river-photos-of-the-day-thursday" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/2cbfd7f91c529a46e4698d4b834d7113ce56afb7/0_0_3250_2599/master/3250.jpg?width=140&quality=85&auto=format&fit=max&s=a04393a4ba422fbc79d0bb6755737a2f" alt="Tokyo blossom and ice on the Hudson: photos of the day – Thursday" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Brighton to reject £20m Forest bid for Ayari</h2>
+                    <div class="article-meta">
+                        <span class="article-source">BBC News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Brighton are set to reject a £20m offer from Nottingham Forest for midfielder Yasin Ayari.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.bbc.com/sport/football/articles/c20gyeeexgro?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/558c/live/32451d60-fd1b-11f0-9bad-7b7b257ab80c.jpg" alt="Brighton to reject £20m Forest bid for Ayari" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Google Maps now lets you access Gemini while walking and cycling</h2>
+                    <div class="article-meta">
+                        <span class="article-source">TechCrunch</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">When you're walking around and navigating with Maps, you can now ask Gemini questions like "What neighborhood am I in?" or "What are top-rated restaurants nearby?"</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://techcrunch.com/2026/01/29/google-maps-now-lets-you-access-gemini-while-walking-and-cycling/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="static/images/placeholder.svg" alt="Google Maps now lets you access Gemini while walking and cycling">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="Business">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">European boss of Post Office IT scandal firm Fujitsu to step down</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Paul Patterson, who represented firm at Horizon inquiry, will become non-executive chair of UK business• Business live – latest updatesThe European boss of Fujitsu, the company behind the Horizon...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">Business</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/business/2026/jan/29/european-boss-of-fujitsu-paul-patterson-to-step-down" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/edc1087a174727ec9aac3b211dd1cb125db2d2f2/485_0_5285_4228/master/5285.jpg?width=140&quality=85&auto=format&fit=max&s=a25a7f4dcaf65557f073d6af5e1642f3" alt="European boss of Post Office IT scandal firm Fujitsu to step down" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Paul Patterson, who represented firm at Horizon inquiry, will become non-executive chair of UK business• Business live – latest updatesThe European boss of Fujitsu, the company behind the Horizon software at the heart of the Post Office IT scandal, is to step down from his role in March.Paul Patterson, who is the chief executive of the European division of the company, will become non-executive chair of Fujitsu’s UK business, where he will “continue managing the company’s response” to the inquiry into the scandal. Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Trump’s border chief vows ‘improvements’ for ICE operations but doesn’t mention fatal shootings of US citizens – live</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Border czar Tom Homan in Minneapolis says ‘no agency is perfect’ and acknowledges improvements that need to be made to federal immigration enforcement‘Nothing has changed’: Minneapolis on edge...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/us-news/live/2026/jan/29/alex-pretti-minneapolis-ice-tom-homan-democrats-republicans-donald-trump-us-politics-latest-news" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/c7b42da2e7112fc0c37a76c6ec34d0baccbdabe3/934_0_6880_5504/master/6880.jpg?width=140&quality=85&auto=format&fit=max&s=da053a98970e8243d4b3f7b60a8d3575" alt="Trump’s border chief vows ‘improvements’ for ICE operations but doesn’t mention fatal shootings of US citizens – live" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Border czar Tom Homan in Minneapolis says ‘no agency is perfect’ and acknowledges improvements that need to be made to federal immigration enforcement‘Nothing has changed’: Minneapolis on edge despite Trump’s de-escalation vow“I do not want to hear that “everything that’s been done here has been perfect”, Homan said, without referring specifically to the fatal shooting of Renee Good and Alex Pretti.Homan noted that while no “agency is perfect” he did not come to Minneapolis to create “headlines”. The federal immigration enforcement surge is “going to improve because of changes we’re making”, he said. Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Iran seeks to avert US military action with talks in Ankara</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Turkey hosts urgent mediation as Trump’s threats mount and Tehran weighs painful compromises to avoid conflictIran’s foreign minister, Abbas Araghchi, will travel to Ankara for talks aimed at...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/world/2026/jan/29/iran-seeks-to-avert-us-military-action-with-talks-in-ankara" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/b227121d8e7542d710bcce25716c41bd8745d2de/519_0_4878_3903/master/4878.jpg?width=140&quality=85&auto=format&fit=max&s=84ae8ebefadc715d5470ba7afb577114" alt="Iran seeks to avert US military action with talks in Ankara" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Turkey hosts urgent mediation as Trump’s threats mount and Tehran weighs painful compromises to avoid conflictIran’s foreign minister, Abbas Araghchi, will travel to Ankara for talks aimed at preventing a US attack, as Turkish diplomats seek to convince Tehran it must offer concessions over its nuclear programme if it is to avert a potentially devastating conflict.Turkey’s president, Recep Tayyip Erdoğan, proposed a video conference between Donald Trump and his Iranian counterpart, Masoud Pezeshkian – the kind of high-wire diplomacy that may appeal to the US leader, but would be anathema to circumspect Iranian diplomats. No formal direct talks have been held between the two countries for a decade. Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">EU proposals for free extra cabin bags on planes ‘lunatic idea’, says easyJet</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Giving passengers right to additional carry-on baggage would be ‘terrible for the consumer’, warns airline’s CEOEasyJet said proposals to enforce free additional cabin bags on planes across Europe...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/business/2026/jan/29/eu-proposals-to-free-extra-cabin-bags-on-planes-lunatic-idea-says-easyjet" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/30c5ef248a8c9e1187f578377bc133e1dedaae74/282_0_4823_3861/master/4823.jpg?width=140&quality=85&auto=format&fit=max&s=64f05ff6ec677c389726457faa721745" alt="EU proposals for free extra cabin bags on planes ‘lunatic idea’, says easyJet" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Giving passengers right to additional carry-on baggage would be ‘terrible for the consumer’, warns airline’s CEOEasyJet said proposals to enforce free additional cabin bags on planes across Europe are a “lunatic idea”, warning of fare rises and flight delays if legislation goes through.The European parliament last week voted overwhelmingly to give all passengers the right to carry on a small case, as well as the free underseat bags currently permitted. Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Jason Momoa Teases His ‘Pretty Gnarly’ Lobo</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Gizmodo</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Plus, why we didn't get a second season of 'Hawkeye'.</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://gizmodo.com/jason-momoa-lobo-supergirl-dcu-2000715144" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://gizmodo.com/app/uploads/2026/01/MS-0129-lobo-supergirl-1280x853.jpg" alt="Jason Momoa Teases His ‘Pretty Gnarly’ Lobo" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
     <li class="article article-no-expand" data-category="World" data-topics="General">
         <div class="article-container">
             <div class="article-header ">
@@ -125,6 +989,200 @@
             </div>
 
             
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">David Squires on … Sydney FC and football’s version of a stinking fatberg</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Our cartoonist previews the A-League Men’s Sydney derby at Allianz Stadium where two stinkball teams converge this weekend Continue reading...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/football/picture/2026/jan/29/david-squires-cartoon-sydney-fc-football-fatberg" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/6c1f093513b1c961dc1c6698a402b68af12b04a3/61_62_913_730/master/913.jpg?width=140&quality=85&auto=format&fit=max&s=a4e1fcbf0211c02762b76a55de1ab935" alt="David Squires on … Sydney FC and football’s version of a stinking fatberg" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Claude Code Daily Benchmarks for Degradation Tracking</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Hacker News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://marginlab.ai/trackers/claude-code/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="static/images/placeholder.svg" alt="Claude Code Daily Benchmarks for Degradation Tracking">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">US leads record global surge in gas-fired power driven by AI demands, with big costs for the climate</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Projects in development expected to grow global capacity by nearly 50% amid growing concern over impact on planetThe US is leading a huge global surge in new gas-fired power generation that will...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/environment/2026/jan/29/gas-power-ai-climate" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/9ece82dd0e02eee13bdf788cb7d0994390f76a61/627_0_4501_3600/master/4501.jpg?width=140&quality=85&auto=format&fit=max&s=31b59b02f51afce7036853094802295a" alt="US leads record global surge in gas-fired power driven by AI demands, with big costs for the climate" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Projects in development expected to grow global capacity by nearly 50% amid growing concern over impact on planetThe US is leading a huge global surge in new gas-fired power generation that will cause a major leap in planet-heating emissions, with this record boom driven by the expansion of energy-hungry datacenters to service artificial intelligence, according to a new forecast.This year is set to shatter the annual record for new gas power additions around the world, with projects in development expected to grow existing global gas capacity by nearly 50%, a report by Global Energy Monitor (GEM) found. Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">‘This league has stepped up’: tension at top of Premiership Women’s Rugby</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Guardian</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">The PWR returns with Gloucester-Hartpury on an epic winning run and a tight battle for the semi-final spotsGloucester-Hartpury will take to the pitch this weekend when the league returns from a...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theguardian.com/sport/2026/jan/29/tension-at-top-premiership-womens-rugby-gloucester-hartpury-trailfinders" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://i.guim.co.uk/img/media/be06570aa74d51eecebfca54eea4bfb0966244fd/1239_209_3003_2402/master/3003.jpg?width=140&quality=85&auto=format&fit=max&s=db911af9baa40a1b5bcdbb9342e4af62" alt="‘This league has stepped up’: tension at top of Premiership Women’s Rugby" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">The PWR returns with Gloucester-Hartpury on an epic winning run and a tight battle for the semi-final spotsGloucester-Hartpury will take to the pitch this weekend when the league returns from a six-week break looking to sustain an enviable record in Premiership Women’s Rugby. The West Country team are unbeaten since a defeat by local rivals Bristol Bears in November 2024 and have since won 18 PWR games on the bounce, including their third successive final.If Gloucester beat Loughborough at Kingsholm on Sunday they will leapfrog Saracens, who sit top of the table despite losing to the champions this season, and who have a bye this weekend. The top two are 12 points clear of the rest and the clubs who finish in either of those spots host their semi-final. Continue reading...</p>
+                </div>
+            </div>
             
 
             
@@ -288,6 +1346,102 @@
         </div>
     </li>
     
+    <li class="article " data-category="OTT" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Canal+ targets €400m+ run-rate synergies from MultiChoice deal</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Broadband TV News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Canal+ says it expects to deliver more than €400m in EBITA and more than €300m in free cash flow (FCF) run-rate cost synergies from 2030 onwards following its acquisition of MultiChoice. The group...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.broadbandtvnews.com/2026/01/29/canal-targets-e400m-run-rate-synergies-from-multichoice-deal/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://cdn.broadbandtvnews.com/wp-content/uploads/2025/11/21124134/Canal-Champions-League-Studio-900x600.jpg" alt="Canal+ targets €400m+ run-rate synergies from MultiChoice deal" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Canal+ says it expects to deliver more than €400m in EBITA and more than €300m in free cash flow (FCF) run-rate cost synergies from 2030 onwards following its acquisition of MultiChoice. The group describes the transaction as “transformational”, creating a larger entertainment platform anchored in Europe and Africa, with a combined subscriber base of more than 40 million and leadership positions in around 40 countries. Canal+ CEO Maxime Saada said the increased scale would unlock “substantial synergies” across the cost base, while also strengthening the group’s ability to capture growth in African markets. Synergy delivery is expected to ramp over the second half of the decade, measured against an estimated combined 2025 cost baseline of around €8bn. Implementation costs are expected to be about €35m in 2026, €40m in 2028 and €20m in 2030. The company says the savings will come from a mix of content, technology and other operating costs, including rationalisation of internal content, negotiations with sports and entertainment rights holders, hardware pricing, optimisation of broadcast infrastructure, convergence of technology platforms, procurement, and reductions across brand, marketing, financing and support functions. CANAL+ also confirmed a combined Africa management team is now in charge of all African markets under David Mignot. It says actions taken since gaining control of MCG in September 2025 have already secured more than €80m of FCF synergies for 2026, including new content partnerships, hardware price renegotiations, infrastructure optimisation and refinancing of MultiChoice’s long-term debt. Further detail on the strategy for MCG markets is due alongside CANAL+’s full-year results and a forthcoming strategic update.</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">A lot of population numbers are fake</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Hacker News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://davidoks.blog/p/a-lot-of-population-numbers-are-fake" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="static/images/placeholder.svg" alt="A lot of population numbers are fake">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
     <li class="article " data-category="World" data-topics="General">
         <div class="article-container">
             <div class="article-header expandable">
@@ -331,6 +1485,58 @@
             <div class="article-content-wrapper">
                 <div class="article-content">
                     <p class="content-text">Universal credit to rise faster than inflation, benefit hurdles eased, extra help for children and young people … I bet you had no ideaIt’s the good this government does that can make you hold your head in your hands and sigh. Ask people what they think of Labour policy on benefits and they will probably talk of seizing the winter fuel allowance from freezing pensioners. Or that £5bn snatched from disabled people, until Labour’s own MPs prevented it. These were the signifiers that set the wrong tone early on. Late, far too late, abolishing the two-child limit has not made the same impression on public perceptions, despite the Joseph Rowntree Foundation (JRF) this week reporting it as being behind what could be the greatest ever fall in child poverty in a parliament.The government fails to herald its progress in reversing the worst the Tories did to benefits. Why? I’m not sure if it is ineptitude or a political decision not to trumpet its many progressive policies.Polly Toynbee is a Guardian columnist Continue reading...</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="OTT" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">All Media Group reshuffles top team as Go3 Baltics names new CEO</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Broadband TV News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Giedrius Skliutas All Media Group, the Baltic media business behind TV3 and Go3, is set to appoint Giedrius Skliutas as chief executive from 1 January 2026, as the company accelerates a wider...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.broadbandtvnews.com/2026/01/29/all-media-group-reshuffles-top-team-as-go3-baltics-names-new-ceo/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://cdn.broadbandtvnews.com/wp-content/uploads/2026/01/29133253/Giedrius-Skliutas.jpg" alt="All Media Group reshuffles top team as Go3 Baltics names new CEO" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Giedrius Skliutas All Media Group, the Baltic media business behind TV3 and Go3, is set to appoint Giedrius Skliutas as chief executive from 1 January 2026, as the company accelerates a wider transformation programme spanning content, advertising and distribution.  As part of the changes, Christian Anting will move into the role of Chief Content Officer from the same date, overseeing sports and international content acquisitions and strategic content management, while remaining on the board.  Within the group’s streaming arm, Tomas Burovas has been named CEO of Go3 Baltics from January, succeeding Jan Wykrytowicz after nearly 7 years in charge. Go3 says it has more than 600,000 customers across Lithuania, Latvia and Estonia and is targeting 1 million subscribers over the next few years, with an emphasis on platform development, sports and exclusive content, and more flexible pricing models.  All Media Group sits within Bite Group, which is majority owned by Providence Equity Partners. </p>
                 </div>
             </div>
             
@@ -432,6 +1638,58 @@
         </div>
     </li>
     
+    <li class="article " data-category="OTT" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">Movistar Plus+ adds Squirrel DTT entertainment channel</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Broadband TV News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">Movistar Plus+ has added Squirrel, the family-focused DTT movies and series channel, to its TV and multi-device line-up from 29 January. The channel will carry a mix of Spanish and international...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.broadbandtvnews.com/2026/01/29/movistar-plus-adds-squirrel-dtt-entertainment-channel/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://cdn.broadbandtvnews.com/wp-content/uploads/2022/05/14110050/Movistar-Shop-900x495.webp" alt="Movistar Plus+ adds Squirrel DTT entertainment channel" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">Movistar Plus+ has added Squirrel, the family-focused DTT movies and series channel, to its TV and multi-device line-up from 29 January. The channel will carry a mix of Spanish and international films and series, with Movistar Plus+ positioning the addition as part of a broader push to reflect changing viewing habits and expand its mainstream entertainment offer.  Titles highlighted around the launch include Rambo: Last Blood, The Outpost, Jude and Winchester, alongside long-running series such as Cuéntame cómo pasó.</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
     <li class="article article-no-expand" data-category="World" data-topics="General">
         <div class="article-container">
             <div class="article-header ">
@@ -466,6 +1724,102 @@
                 <div class="article-image">
                     
                     <img src="https://e3.365dm.com/26/01/1920x1080/skynews-yaser-jabbar-surgeon_7149469.jpg?20260129123534" alt="94 patients were harmed by Great Ormond Street orthopaedic surgeon, report finds" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article " data-category="OTT" data-topics="General">
+        <div class="article-container">
+            <div class="article-header expandable">
+                <div class="article-info">
+                    <h2 class="article-title">CityFibre to cut 450 jobs as it pivots from build to acquisitions</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Broadband TV News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <p class="article-preview">CityFibre is reportedly planning to cut around 450 roles, roughly a third of its 1,400-strong workforce, as the UK wholesale fibre operator restructures its business and shifts strategy from...</p>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.broadbandtvnews.com/2026/01/29/cityfibre-to-cut-450-jobs-as-it-pivots-from-build-to-acquisitions/" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://cdn.broadbandtvnews.com/wp-content/uploads/2026/01/29132454/Van-installation-CityFibre-900x506.jpg" alt="CityFibre to cut 450 jobs as it pivots from build to acquisitions" onerror="this.src='static/images/placeholder.svg'">
+                    
+                </div>
+            </div>
+
+            
+            
+            <div class="article-content-wrapper">
+                <div class="article-content">
+                    <p class="content-text">CityFibre is reportedly planning to cut around 450 roles, roughly a third of its 1,400-strong workforce, as the UK wholesale fibre operator restructures its business and shifts strategy from network build to buying rival altnets.  The redundancies are expected to fall mainly on engineering teams, reflecting the move away from large-scale construction activity. In a note to staff, chief executive Simon Holden said CityFibre’s present structure was “no longer the right fit for where our business is heading” and action was needed. He added: “This is not something we take lightly, and we are committed to working through it together. We believe these changes are necessary to ensure CityFibre continues to deliver for customers while remaining resilient and well-positioned for the future.” CityFibre reported record revenue of £170 million (€196m) last year and has been leaning on a wholesale deal with Sky to drive take-up, but it is also carrying heavy debt and operating in a market where higher interest rates and slower customer migration have increased pressure on challenger networks.  The company is widely seen as a potential consolidator as weaker players stumble, with recent examples including G.Network, which recently collapsed into administration after being taken over by private equity firm FitzWalter Capital, and lenders including NatWest circling rural provider Gigaclear.</p>
+                </div>
+            </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="World" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">Bus driver who chased and knocked out thief sacked</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Sky News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://news.sky.com/story/london-bus-driver-sacked-after-chasing-and-punching-man-who-stole-passengers-necklace-13500615" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-london-bus-bus_7149507.jpg?20260129132846" alt="Bus driver who chased and knocked out thief sacked" onerror="this.src='static/images/placeholder.svg'">
                     
                 </div>
             </div>
@@ -4357,6 +5711,50 @@
                     <p class="content-text">Judge jails John Eric Spiby and three others who police said were part of gang running operation worth up to £288mA man who won £2.4m on the national lottery helped build a multimillion pound drug empire that involved manufacturing counterfeit tablets on an industrial scale, a court has heard.John Eric Spiby, 80, was the leader of a drugs operation worth up to £288m that centred on his “quiet, rural” home near Wigan, Bolton crown court was told. Continue reading...</p>
                 </div>
             </div>
+            
+
+            
+            
+        </div>
+    </li>
+    
+    <li class="article article-no-expand" data-category="General" data-topics="General">
+        <div class="article-container">
+            <div class="article-header ">
+                <div class="article-info">
+                    <h2 class="article-title">UK Government to Create 'British FBI', Roll Out Nationwide Facial Recognition</h2>
+                    <div class="article-meta">
+                        <span class="article-source">Hacker News</span>
+                        <span class="meta-separator">•</span>
+                        <span class="article-date">Jan 29, 2026</span>
+                    </div>
+                    
+                    <div class="article-topics">
+                        
+                        
+                        <span class="topic-tag">General</span>
+                        
+                        
+                        
+                        <a href="https://www.theepochtimes.com/world/uk-government-to-create-british-fbi-roll-out-nationwide-facial-recognition-cameras-5976929" target="_blank" rel="noopener noreferrer" class="source-tag">
+                            Source
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                <polyline points="15 3 21 3 21 9"></polyline>
+                                <line x1="10" y1="14" x2="21" y2="3"></line>
+                            </svg>
+                        </a>
+                        
+                    </div>
+                </div>
+                <div class="article-image">
+                    
+                    <img src="static/images/placeholder.svg" alt="UK Government to Create 'British FBI', Roll Out Nationwide Facial Recognition">
+                    
+                </div>
+            </div>
+
+            
             
 
             
@@ -22858,1394 +24256,6 @@
         </div>
     </li>
     
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Man given Musk's brain chip in UK trial says it 'feels magical'</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Sky News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://news.sky.com/story/man-given-musks-neuralink-brain-chip-in-uk-trial-says-it-feels-magical-and-gives-new-hope-13500126" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-neuralink-clark_7148477.jpg?20260128131025" alt="Man given Musk's brain chip in UK trial says it 'feels magical'" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="General" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">If You Tax Them, Will They Leave?</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Hacker News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theatlantic.com/economy/2026/01/california-wealth-tax-billionaire-migration/685779/" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="static/images/placeholder.svg" alt="If You Tax Them, Will They Leave?">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">UK media groups should be allowed opt out of Google AI Overviews, CMA says</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">News organisations hope proposals will increase leverage to get paid if content is used in AI summariesWeb publishers and news organisations could be given the power to stop Google scraping their...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/media/2026/jan/28/uk-media-groups-should-be-allowed-opt-out-of-google-ai-overviews-cma-proposals" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/0d406750cb19c46c446ec17be8b0b1f163e9e46b/344_0_3439_2751/master/3439.jpg?width=140&quality=85&auto=format&fit=max&s=bc180b034727173032792b8f282b73e9" alt="UK media groups should be allowed opt out of Google AI Overviews, CMA says" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">News organisations hope proposals will increase leverage to get paid if content is used in AI summariesWeb publishers and news organisations could be given the power to stop Google scraping their content for its AI Overviews, under measures announced by the UK competition watchdog to loosen its grip on online search.Media organisations have experienced a drop in click-through traffic to their websites – and therefore their revenue – since Google started posting AI summaries at the top of search results, which many people read without clicking through to the original journalism. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="OTT" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Ease Live adds VAST support to expand on-stream ad inventory across CTV and OTT</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Broadband TV News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Ease Live has added support for VAST (Video Ad Serving Template) to its graphical overlay technology, opening up new ways for broadcasters, streamers and rights holders to sell “on-stream” video...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.broadbandtvnews.com/2026/01/28/ease-live-adds-vast-support-to-expand-on-stream-ad-inventory-across-ctv-and-ott/" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://cdn.broadbandtvnews.com/wp-content/uploads/2026/01/28122515/Ease-Live-900x506.jpg" alt="Ease Live adds VAST support to expand on-stream ad inventory across CTV and OTT" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Ease Live has added support for VAST (Video Ad Serving Template) to its graphical overlay technology, opening up new ways for broadcasters, streamers and rights holders to sell “on-stream” video advertising without extending ad breaks or interrupting programmes. The Norwegian company said the update enables standard ad responses and tracking to be used with overlay and squeeze-back formats that render on top of the stream, rather than relying on player-specific ad formats or server-side ad insertion. Ease Live argues this reduces integration complexity and allows publishers to build incremental inventory around premium moments in both live and on-demand video. “Our customers want more monetisation options that feel native to the viewing experience,” said Kjetil Horneland, CEO, Ease Live. “This update reduces friction for agencies and brands while helping publishers create incremental, contextual inventory during live action and on-demand viewing.” Ease Live said overlay ads can be triggered using approved metadata sources, ranging from live sports feeds to scene-level signals and content keywords. The company positions this approach as a route to scalable contextual advertising across web, mobile, OTT and connected TV platforms, including Apple TV and Roku. The company outlined a range of use cases, including live sports moments such as goals, substitutions, time-outs and highlights, as well as entertainment formats including contestant reveals, voting windows, results and live polls. Ease Live also highlighted side-by-side and squeeze-back video placements during “high-attention” moments, with optional interactive calls to action such as scanning a QR code, voting, learning more or shopping. With VAST support now available within its graphical overlay advertising solutions, Ease Live said campaigns can be trafficked using standard tags and familiar ad operations workflows, while measurement aligns with established video KPIs for delivery, tracking and reconciliation. Ease Live said it will advise customers on supported placements, trafficking workflows, measurement outputs and activation best practices across sports and entertainment.</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Why are some Britons getting &#163;3.99 messages from Facebook and Instagram?</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Sky News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Toronto, Canada - August 22, 2024: Popular social media apps on an Apple iPhone: Facebook, Instagram, TikTok, Threads, X (formerly Twitter), and Reddit.</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://news.sky.com/story/got-an-instagram-notification-asking-if-you-want-to-pay-163399-heres-what-you-need-to-know-13500110" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://e3.365dm.com/25/12/1920x1080/skynews-social-apps_7099757.jpg?20260128123309" alt="Why are some Britons getting &#163;3.99 messages from Facebook and Instagram?" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Inquiry to be held into baby boy's death after 'party' drug exposure</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Sky News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Peterhead Sheriff Court</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://news.sky.com/story/inquiry-to-be-held-into-aberdeenshire-baby-boys-death-after-party-drug-exposure-13499975" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-peterhead-sheriff-court_7148338.jpg?20260128114325" alt="Inquiry to be held into baby boy's death after 'party' drug exposure" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="General" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">ICE and Palantir: US agents using health data to hunt illegal immigrants</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Hacker News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.bmj.com/content/392/bmj.s168" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="static/images/placeholder.svg" alt="ICE and Palantir: US agents using health data to hunt illegal immigrants">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Why China views the UK visit as part of something bigger</h2>
-                    <div class="article-meta">
-                        <span class="article-source">BBC News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Sir Keir Starmer is one of a number of world leaders heading to Beijing</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.bbc.com/news/articles/c3wz2x7ppz7o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/05e2/live/1a070c50-fb8f-11f0-b385-5f48925de19a.jpg" alt="Why China views the UK visit as part of something bigger" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Lucinda Williams review – Americana legend brilliantly rails against a world out of balance</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Limelight, BelfastAt 73, the lodestar of Americana still writes with urgency, as the patient force of her band sends the music grooving skywards‘Thanks for being receptive to my complaining,”...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/music/2026/jan/28/lucinda-williams-review-belfast-limelight" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/3ef46d44d1dddc54d9e4a46635eb4331e384e737/1_0_2167_1733/master/2167.jpg?width=140&quality=85&auto=format&fit=max&s=956d96c66dea6ec641848ad1ffe8b4bb" alt="Lucinda Williams review – Americana legend brilliantly rails against a world out of balance" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Limelight, BelfastAt 73, the lodestar of Americana still writes with urgency, as the patient force of her band sends the music grooving skywards‘Thanks for being receptive to my complaining,” Lucinda Williams says late on, deadpan, after a run of songs circling power and consequence. Outside, Storm Chandra keeps the streets jumpy. Inside Belfast’s Limelight, a sold-out crowd sits on fold-up seats for a show shifted from Mandela Hall at short notice, the room oddly calm for a venue known for sweat and shoving.Williams is a lodestar in the broad galaxy of music still called Americana, and two days after turning 73, she has the authority of a multiple Grammy winner who writes with urgency. She is living with the after-effects of a stroke, stepping on and off stage with care, yet once she’s behind the mic she radiates resolve. If anything, the voice sounds newly burnished; the phrasing more deliberate, the vibrato catching the light. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="OTT" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Premier Sports launches dedicated rugby OTT service in Canada</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Broadband TV News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Premier Sports has launched a dedicated over-the-top streaming service in Canada, bringing a bundled line-up of international and club rugby to fans nationwide. From 2026, the service will stream...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.broadbandtvnews.com/2026/01/28/premier-sports-launches-dedicated-rugby-ott-service-in-canada/" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://cdn.broadbandtvnews.com/wp-content/uploads/2026/01/28121252/6-Nations-Graphic-900x675.jpg" alt="Premier Sports launches dedicated rugby OTT service in Canada" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Premier Sports has launched a dedicated over-the-top streaming service in Canada, bringing a bundled line-up of international and club rugby to fans nationwide. From 2026, the service will stream every match of the Guinness Men’s Six Nations, the U20 Six Nations and the new Nations Championship live and on-demand. It will also carry southern hemisphere rugby including SANZAAR international tour matches and Super Rugby Pacific, covering both the regular season and finals. Premier Sports said the Canadian proposition creates a single destination for elite rugby, expanding access at a time when interest in the sport is growing at community and university levels. The Six Nations coverage begins with the 2026 tournament, running from Thursday 5 February to Saturday 14 March, with all 15 matches live and on-demand. The U20 Six Nations will also be shown live and on-demand across the same period, with 15 matches scheduled from Friday 5 February to Sunday 15 March. The service will also cover the new Nations Championship, due to debut in July 2026. The competition will bring together 12 teams across the Six Nations unions and SANZAAR nations, including Argentina, Australia, New Zealand and South Africa, with Japan and Fiji also referenced as invitation teams. Premier Sports linked the launch to rising attention on Canadian rugby, citing increased fan engagement ahead of Rugby World Cup 2027, where Canada’s men are due to feature in Pool C alongside Argentina and Fiji. Ryle Nugent, CEO of Premier Sports Ireland and Asia, said: “We’re delighted to offer rugby fans in Canada a single high quality streaming destination for the world’s biggest international tournaments and strongest club competitions available live, on-demand and on connected platforms nationwide. “Canada has an informed and passionate rugby community and we look forward to bringing more tier one rugby to fans as the sport continues to grow in popularity ahead of the next World Cup. We hope that by making these world-class rugby competitions available, we will play our part in a new era of rugby growth in Canada.” Premier Sports said the service will be available across mobile, web and connected TV platforms, supported by smart TV apps and casting. Subscriptions start at $29.99 per month.</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="General" data-topics="Technology">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Show HN: SHDL – A minimal hardware description language built from logic gates</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Hacker News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">Technology</span>
-                        
-                        
-                        
-                        <a href="https://github.com/rafa-rrayes/SHDL" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="static/images/placeholder.svg" alt="Show HN: SHDL – A minimal hardware description language built from logic gates">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Criminal Cases Review Commission refers indefinite sentences of five men for appeal</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Referrals all relate to controversial imprisonment for public protection scheme or its equivalent for childrenUK politics live – latest updatesFive men have had their indefinite sentences under...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/society/2026/jan/28/five-men-jailed-indefinitely-for-public-protection-get-sentences-referred-for-appeal" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/87e0be71b524ce7abac4c2f569cc98a2a45a867e/355_0_3524_2818/master/3524.jpg?width=140&quality=85&auto=format&fit=max&s=0c3354be1b8d2bf9dd57e426fbe062a9" alt="Criminal Cases Review Commission refers indefinite sentences of five men for appeal" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Referrals all relate to controversial imprisonment for public protection scheme or its equivalent for childrenUK politics live – latest updatesFive men have had their indefinite sentences under the imprisonment for public protection (IPP) scheme, or its equivalent for children, referred for appeal.The decision by the Criminal Cases Review Commission (CCRC) was made in light of the court of appeal quashing three prisoners’ indeterminate sentences on the basis that their young age and level of maturity was not properly taken into account when they were sentenced.Benjamin Hibbert, who was convicted of three counts of sexual assault in 2009 and sentenced to a minimum tariff of two years. He was 15 or 16 at the time of the offences.Stuart O’Neill was 20 when sentenced to a minimum term of three years and six months for rape in 2009.Jay Davis was convicted of possessing a firearm with intent to cause fear or violence in 2006 and sentenced to a minimum term of nine months. He was 19 at the time of the offence.Luke Ings was convicted of two counts of robbery and two counts of battery in 2006 and sentenced to a minimum term of one year nine months minus 81 days on remand. He was 17 at the time of the offence.James Ward was convicted of arson and criminal damage in 2006 and sentenced to one year minus 63 days on remand. He was 20 at the time of the offence. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="General" data-topics="Business">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">SoftBank in Talks to Invest Up to $30B More in OpenAI</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Hacker News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">Business</span>
-                        
-                        
-                        
-                        <a href="https://www.wsj.com/tech/ai/softbank-in-talks-to-invest-up-to-30-billion-more-in-openai-8585dea3" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="static/images/placeholder.svg" alt="SoftBank in Talks to Invest Up to $30B More in OpenAI">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Match of the Day scores viewing figures success with BBC’s new digital strategy</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Highlight clips available at 8pm on Saturday for first timeTraditional linear viewing of weekend show has declinedMatch of the Day’s viewing figures have increased considerably this season in a...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/football/2026/jan/28/match-of-the-day-viewing-figures-success-bbc-new-digital-strategy" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/1e924c98de02c854811dd3ed6d2ff8790e365825/478_32_1707_1366/master/1707.jpg?width=140&quality=85&auto=format&fit=max&s=47224c94f96b1df18f890e267abf9aff" alt="Match of the Day scores viewing figures success with BBC’s new digital strategy" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Highlight clips available at 8pm on Saturday for first timeTraditional linear viewing of weekend show has declinedMatch of the Day’s viewing figures have increased considerably this season in a vindication of the BBC’s new digital strategy, according to data obtained by the Guardian.Traditional linear viewing of the Saturday and Sunday evening highlights programmes had declined by 770,000 to 6.88 million average weekly views last month compared with December 2024 but MOTD has gained 1.52 million viewers by making highlight clips available on its website and app at 8pm on Saturdays for the first time. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="General" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Bandai’s ‘Marvel vs. Capcom’ Figures Just Keep Getting Better and Better</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Gizmodo</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Wolverine joins the fray for a berserker barrage or two, as the SH Figuarts 'Gamerverse' line adds another Marvel icon.</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://gizmodo.com/sh-figuarts-gamerverse-wolverine-marvel-vs-capcom-preorders-price-release-date-2000714783" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://gizmodo.com/app/uploads/2026/01/bandai-sh-figuarts-gamerverse-wolverine-1280x853.jpg" alt="Bandai’s ‘Marvel vs. Capcom’ Figures Just Keep Getting Better and Better" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">‘Evil is resilient’: pressure on Stephen Miller but Trump unlikely to cut ties</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Outrage followed ‘would-be assassin’ lie but experts say architect of ICE drive too dominant a figure to be shunnedPressure is growing on key White House senior adviser Stephen Miller over the...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/us-news/2026/jan/28/stephen-miller-ice-minneapolis-trump" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/e90e70b24a3521bca6d0b8884f1488eaca366e98/1007_0_6641_5312/master/6641.jpg?width=140&quality=85&auto=format&fit=max&s=77e1b8b8c6dee38514466735a0cc8fb3" alt="‘Evil is resilient’: pressure on Stephen Miller but Trump unlikely to cut ties" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Outrage followed ‘would-be assassin’ lie but experts say architect of ICE drive too dominant a figure to be shunnedPressure is growing on key White House senior adviser Stephen Miller over the killing of intensive care nurse Alex Pretti by border patrol agents in Minneapolis and its politically divisive aftermath.Miller, the architect of Donald Trump’s hardline immigration policy, finds himself in the rare position of being contradicted and excluded from crucial decisions by the US president. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="General" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Kyber (YC W23) Is Hiring a Staff Engineer</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Hacker News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.ycombinator.com/companies/kyber/jobs/GPJkv5v-staff-engineer-tech-lead" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="static/images/placeholder.svg" alt="Kyber (YC W23) Is Hiring a Staff Engineer">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="OTT" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">One Hungary unifies Linux and Android set-top experiences with 3SS 3Ready</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Broadband TV News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">One Hungary has launched two new Android TV set-top boxes for its OneTV entertainment service, extending its next-generation user experience across both legacy Linux and new Android devices...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.broadbandtvnews.com/2026/01/28/one-hungary-unifies-linux-and-android-set-top-experiences-with-3ss-3ready/" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://cdn.broadbandtvnews.com/wp-content/uploads/2026/01/28115630/One-Hungary-Unifies-Linux-and-Android-STB-Experiences-with-3SS-3Ready-900x506.jpg" alt="One Hungary unifies Linux and Android set-top experiences with 3SS 3Ready" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">One Hungary has launched two new Android TV set-top boxes for its OneTV entertainment service, extending its next-generation user experience across both legacy Linux and new Android devices through 3 Screen Solutions’ 3Ready platform. The deployment, delivered in collaboration with Sagemcom and Nagravision, introduces a bespoke OneTV UI/UX built on 3SS’s 3Ready product platform, with enhanced navigation, personalised recommendations and simplified content discovery. Development began in January 2025, with the service going live at the end of October. One Hungary’s Android portfolio comprises two Sagemcom devices: the SoundBox and the MiniBox Pro. The SoundBox is part of Sagemcom’s Video Soundbox (VSB) line, combining a set-top box with an integrated sound system. The supplier describes it as the world’s first Dolby Atmos-certified 4K set-top box, featuring Audio by Bang & Olufsen, and capable of operating as a smart speaker even when the TV is switched off. The MiniBox Pro runs Android TV 14 and targets OTT viewing with Google Cast, Wi-Fi 6 and far-field microphones. The operator said accessibility is a key focus, with improved services for viewers with visual impairments including fast access to a screen reader, talkback functionality and easy text scaling. Sagemcom and 3SS oversaw integration and certification of premium third-party services, including Netflix, while RTL+ Premium and HBO Max are deep-linked to enable users to find content from multiple providers via a centralised interface. “We congratulate One Hungary for the launch of OneTV, now delivering a state-of-the-art user experience on the new Sagemcom Android STBs,” said Olivier Taravel, Senior Executive VP – Audio Video Solutions Business Unit at Sagemcom. “We are extremely honored that One Hungary continues to rely on Sagemcom to deliver its exciting next-generation service, elevating entertainment UX for Hungarian consumers.” “One Hungary has already set a high bar in terms of innovation and commitment to providing quality and choice to customers,” commented Kai-Christian Borchers, Managing Director of 3SS. “We’re extremely proud that the capability and flexibility of 3Ready are helping One Hungary to deliver engaging, personalised, and seamless next-gen services. The smooth and successful launch of two new devices for OneTV customers evidences the power of collaboration; now more OneTV subscribers, present and future, will be able to enjoy first-class entertainment experiences underpinned by state-of-the-art technology.” The Android rollout follows the earlier OneTV rebrand and platform refresh, which saw more than 400,000 subscribers with Linux set-top boxes migrated to the new OneTV platform without replacing hardware. “Recent NPS results highlight that OneTV is moving in the right direction, with new customers in particular giving very positive feedback. We are proud that this success goes hand in hand with our commitment to sustainability, as OneTV was deployed to over 400,000 customers without the need for hardware replacement,” commented Tamás Bányai, CEO of One Hungary. The project builds on 4iG’s wider transformation programme, including the September 2023 appointment of Nagravision and 3SS to support the migration and deployment of OpenTV and 3Ready for a feature-rich multi-device TV service across cable, IPTV and OTT.</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Fresh or undercooked? Djokovic unsure where fortune leaves him</h2>
-                    <div class="article-meta">
-                        <span class="article-source">BBC News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Novak Djokovic has only played 11 sets on his way to the Australian Open semi-finals, largely thanks to some good fortune. Does that help or hinder him?</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.bbc.com/sport/tennis/articles/c77k5y4v0m1o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/b7cb/live/c4347e90-fc3b-11f0-851f-553096e4fe99.jpg" alt="Fresh or undercooked? Djokovic unsure where fortune leaves him" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Landslide in Sicily causes homes to fall off cliff edge</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Sky News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">A drone picture shows houses perched along the edge of a cliff after a landslide in Niscemi, Sicily, Italy, January 27, 2026. REUTERS/Danilo Arnone</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://news.sky.com/story/the-entire-hill-is-collapsing-landslide-in-sicily-causes-homes-to-fall-off-cliff-edge-1500-evacuated-13500094" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-sicily-italy-landslide_7147272.jpg?20260127125755" alt="Landslide in Sicily causes homes to fall off cliff edge" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="Technology">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Government offers UK adults free AI training for work</h2>
-                    <div class="article-meta">
-                        <span class="article-source">BBC News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">The online lessons give advice on things such as how to prompt chatbots or complete admin tasks.</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">Technology</span>
-                        
-                        
-                        
-                        <a href="https://www.bbc.com/news/articles/cp37prvp072o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/10c9/live/c2700050-fc3d-11f0-851f-553096e4fe99.jpg" alt="Government offers UK adults free AI training for work" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Health secretary repeatedly asked if scandal-hit super hospital is 'safe'</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Sky News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">File photo originally used 13/11/23 of Queen Elizabeth University Hospital in Glasgow. Police are investigating the deaths of six patients w</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://news.sky.com/story/scotlands-health-secretary-neil-gray-repeatedly-asked-if-queen-elizabeth-university-hospital-is-safe-13500093" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-glasgow-glasgow-hospital_7148373.jpg?20260128115811" alt="Health secretary repeatedly asked if scandal-hit super hospital is 'safe'" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">Centrist ideas no longer wanted in Conservative party, says Kemi Badenoch</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Party leader tells MPs that one-nation Tories doubting her rightward direction ‘need to get out of the way’UK politics live – latest updatesCentrist ideas are no longer wanted in the Conservative...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/politics/2026/jan/28/centrist-ideas-no-longer-wanted-in-conservative-party-says-kemi-badenoch" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/e3ecb3c295f18d5deb3396bca4310d92be9b465e/316_0_2710_2168/master/2710.jpg?width=140&quality=85&auto=format&fit=max&s=d50525309f608c64b5a643232f99c0c1" alt="Centrist ideas no longer wanted in Conservative party, says Kemi Badenoch" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Party leader tells MPs that one-nation Tories doubting her rightward direction ‘need to get out of the way’UK politics live – latest updatesCentrist ideas are no longer wanted in the Conservative party, Kemi Badenoch has said, arguing that one nation-type Tories or others who have qualms about her rightward direction for the party “need to get out of the way”.Making a speech in Westminster intended to set out her vision for the party after a spate of recent defections to Reform UK, the Conservative leader hit out at what she called the “tantrum” of Robert Jenrick and others. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Olivia Dean set to 'light up' Mobo Awards stage</h2>
-                    <div class="article-meta">
-                        <span class="article-source">BBC News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Hip-hop star Eve and comedian Eddie Kadi will host the ceremony being held in Manchester in March.</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.bbc.com/news/articles/c20g2d38eg8o?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/6bcd/live/fb811ec0-fc28-11f0-9554-45dc30088314.jpg" alt="Olivia Dean set to 'light up' Mobo Awards stage" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Ecuador says ICE agent attempted to enter its Minneapolis consulate</h2>
-                    <div class="article-meta">
-                        <span class="article-source">BBC News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">A complaint has been filed by Ecuador, whose consular staff prevented the agent from entering.</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.bbc.com/news/articles/c4g40k40xndo?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/6e41/live/7b5abea0-fc3b-11f0-851f-553096e4fe99.jpg" alt="Ecuador says ICE agent attempted to enter its Minneapolis consulate" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">What is Nipah virus? Key things to know about the disease amid cases in India</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Highly contagious virus, which spreads from animals to humans, has a high fatality rate and there is no vaccine Airports across Asia have been put on high alert after India confirmed two cases of...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/science/2026/jan/28/what-is-nipah-virus-outbreak-india-symptoms" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/67c5e43b5ae8ff00f93d218e07f27cd0386be29a/116_0_2325_1860/master/2325.jpg?width=140&quality=85&auto=format&fit=max&s=a01ea7ba3bc3954763a4d0da4274a319" alt="What is Nipah virus? Key things to know about the disease amid cases in India" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Highly contagious virus, which spreads from animals to humans, has a high fatality rate and there is no vaccine Airports across Asia have been put on high alert after India confirmed two cases of the deadly Nipah virus in the state of West Bengal over the past month.Thailand, Nepal and Vietnam are among the countries screening airport arrivals over fears of an wider outbreak of the deadly virus, which spread from animals to humans and has a high fatality rate. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Ireland replace Aki for 'disciplinary reasons'</h2>
-                    <div class="article-meta">
-                        <span class="article-source">BBC News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Bundee Aki is not with the Ireland squad for their Six Nations camp in Portugal with the Connacht centre the subject of a misconduct complaint after his side's URC defeat by Leinster on Saturday.</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.bbc.com/sport/rugby-union/articles/cvgpzyv5y7no?at_medium=RSS&at_campaign=rss" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://ichef.bbci.co.uk/ace/standard/240/cpsprodpb/178d/live/8af23570-fc39-11f0-becd-a11785da9989.jpg" alt="Ireland replace Aki for 'disciplinary reasons'" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article article-no-expand" data-category="World" data-topics="Politics">
-        <div class="article-container">
-            <div class="article-header ">
-                <div class="article-info">
-                    <h2 class="article-title">Tories 'on the right but appeal to the majority', says Badenoch</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Sky News</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Kemi Badenoch delivers a speech at Church House in London. Pic: PA</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">Politics</span>
-                        
-                        
-                        
-                        <a href="https://news.sky.com/story/tories-on-the-right-but-appeal-to-the-majority-says-kemi-badenoch-13500081" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://e3.365dm.com/26/01/1920x1080/skynews-kemi-badenoch-church-house_7148212.jpg?20260128101624" alt="Tories 'on the right but appeal to the majority', says Badenoch" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-
-            
-            
-        </div>
-    </li>
-    
-    <li class="article " data-category="World" data-topics="General">
-        <div class="article-container">
-            <div class="article-header expandable">
-                <div class="article-info">
-                    <h2 class="article-title">TikTok virality gives Jeff Buckley his first US Top 100 hit 29 years after his death</h2>
-                    <div class="article-meta">
-                        <span class="article-source">Guardian</span>
-                        <span class="meta-separator">•</span>
-                        <span class="article-date">Jan 28, 2026</span>
-                    </div>
-                    
-                    <p class="article-preview">Lover, You Should Have Come Over enters charts at No 97, after becoming popular on social media platformJeff Buckley has achieved his first US Hot 100 hit single, 29 years after his death, with...</p>
-                    
-                    <div class="article-topics">
-                        
-                        
-                        <span class="topic-tag">General</span>
-                        
-                        
-                        
-                        <a href="https://www.theguardian.com/music/2026/jan/28/tiktok-jeff-buckley-top-100-hit-lover-you-should-have-come-over" target="_blank" rel="noopener noreferrer" class="source-tag">
-                            Source
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                <polyline points="15 3 21 3 21 9"></polyline>
-                                <line x1="10" y1="14" x2="21" y2="3"></line>
-                            </svg>
-                        </a>
-                        
-                    </div>
-                </div>
-                <div class="article-image">
-                    
-                    <img src="https://i.guim.co.uk/img/media/124017cde2b75081a7299611e106f05e6b96021a/0_1506_3272_2616/master/3272.jpg?width=140&quality=85&auto=format&fit=max&s=77b44a963f60f207718744fe5a237257" alt="TikTok virality gives Jeff Buckley his first US Top 100 hit 29 years after his death" onerror="this.src='static/images/placeholder.svg'">
-                    
-                </div>
-            </div>
-
-            
-            
-            <div class="article-content-wrapper">
-                <div class="article-content">
-                    <p class="content-text">Lover, You Should Have Come Over enters charts at No 97, after becoming popular on social media platformJeff Buckley has achieved his first US Hot 100 hit single, 29 years after his death, with Lover, You Should Have Come Over at No 97 this week.TikTok virality is behind the success, as a new generation of listeners discover Buckley’s spirited, romantic songwriting and pair it with videos on the social media platform. TikTok videos don’t count towards US chart positions, but viral trends drive listeners towards songs on streaming services that do count. Continue reading...</p>
-                </div>
-            </div>
-            
-
-            
-            
-        </div>
-    </li>
-    
 </ul>
 
 
@@ -24255,7 +24265,7 @@
     <footer>
         <p>
             Generated by <a href="https://github.com/jamiefletchertv/feedrr">feedrr</a> •
-            Last updated: 2026-01-29 14:05 UTC
+            Last updated: 2026-01-29 15:08 UTC
         </p>
     </footer>
 

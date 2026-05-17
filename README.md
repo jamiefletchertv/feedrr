@@ -1,4 +1,4 @@
-# feedrr
+# feedrr 
 
 AI-powered RSS news aggregator with smart deduplication and trending detection.
 
